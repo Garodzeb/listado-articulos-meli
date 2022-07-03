@@ -14,10 +14,15 @@
         android:theme="@style/Theme.MeliChallenge"
         tools:targetApi="31">
         <activity
+            android:name=".ProductDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.searchProduct.MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.MeliChallenge.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
