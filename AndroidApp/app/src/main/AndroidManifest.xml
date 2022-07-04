@@ -17,10 +17,10 @@
             android:name=".ProductDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.searchProduct.MainActivity"
+            android:name=".presentation.search_product.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".FullscreenActivity"
+            android:name=".InitialActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
             android:theme="@style/Theme.MeliChallenge.Fullscreen">
