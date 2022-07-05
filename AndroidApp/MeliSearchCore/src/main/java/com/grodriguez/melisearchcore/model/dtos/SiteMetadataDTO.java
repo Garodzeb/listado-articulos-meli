@@ -1,7 +1,7 @@
 package com.grodriguez.melisearchcore.model.dtos;
 
-import com.grodriguez.melisearchcore.model.Currency;
-import com.grodriguez.melisearchcore.model.Category;
+import com.grodriguez.melisearchcore.model.domain.SiteCurrency;
+import com.grodriguez.melisearchcore.model.domain.SiteCategory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,8 @@ public class SiteMetadataDTO {
     private String name = "";
     private String countryId = "";
     private String defaultCurrencyId = "";
-    private List<Currency> currencies = new ArrayList<>();
-    private List<Category> categories = new ArrayList<>();
+    private List<SiteCurrency> currencies = new ArrayList<>();
+    private List<SiteCategory> categories = new ArrayList<>();
 
     public SiteMetadataDTO() {
     }
@@ -52,20 +52,20 @@ public class SiteMetadataDTO {
         this.defaultCurrencyId = defaultCurrencyId;
     }
 
-    public List<Currency> getCurrencies() {
+    public List<SiteCurrency> getCurrencies() {
         return currencies;
     }
 
-    public void setCurrencies(List<Currency> currencies) {
-        this.currencies = currencies;
+    public void setCurrencies(List<SiteCurrency> currencies) {
+        this.currencies = (currencies != null) ? currencies : new ArrayList<>();
     }
 
-    public List<Category> getCategories() {
+    public List<SiteCategory> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
+    public void setCategories(List<SiteCategory> categories) {
+        this.categories = (categories != null) ? categories : new ArrayList<>();
     }
 
     // endregion

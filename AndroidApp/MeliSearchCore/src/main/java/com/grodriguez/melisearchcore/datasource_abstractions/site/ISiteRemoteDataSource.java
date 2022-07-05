@@ -7,6 +7,6 @@ import io.reactivex.rxjava3.core.Single;
 public interface ISiteRemoteDataSource {
 
     // Obtiene la metadata del sitio (categorías, monedas, etc)
-    Single<SiteMetadataDTO> getSiteMetadata();
+    Single<SiteMetadataDTO> getSiteMetadata(String siteId);
 
 }// End Interface

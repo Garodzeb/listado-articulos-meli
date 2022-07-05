@@ -1,4 +1,4 @@
-package com.grodriguez.melisearchcore.model;
+package com.grodriguez.melisearchcore.model.domain;
 
 public class QueryParameter {
 
@@ -6,6 +6,11 @@ public class QueryParameter {
     private String value = "";
 
     public QueryParameter() {
+    }
+
+    public QueryParameter(String id, String value) {
+        this.id = id;
+        this.value = value;
     }
 
     // region GET-SET

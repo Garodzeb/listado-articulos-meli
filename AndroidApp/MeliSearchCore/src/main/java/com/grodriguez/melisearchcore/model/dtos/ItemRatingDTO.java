@@ -1,10 +1,10 @@
 package com.grodriguez.melisearchcore.model.dtos;
 
-import com.grodriguez.melisearchcore.model.PagingMetadata;
+import com.grodriguez.melisearchcore.model.domain.PagingMetadata;
 
 public class ItemRatingDTO {
 
-    private PagingMetadata paging = new SearchPaging();
+    private PagingMetadata paging = new PagingMetadata();
     private float ratingAvg = 0;
 
     public ItemRatingDTO() {

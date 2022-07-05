@@ -21,18 +21,13 @@ public class SiteRepository {
 
     // Busca la metadata del sitio, primero en el repositorio local y si no la encuentra en el
     // repositorio remoto
-    public Single<SiteMetadataDTO> getSiteMetadata(String url) {
-        return siteLocalDS.getSiteMetadata().onErrorResumeWith(siteRemoteDS.getSiteMetadata());
+    public Single<SiteMetadataDTO> getSiteMetadata(String siteId) {
+        return siteLocalDS.getSiteMetadata(siteId).onErrorResumeWith(siteRemoteDS.getSiteMetadata(siteId));
     }
 
     // Guarda la metadata del sitio en el repositorio local
     public Completable saveSiteMetadata(SiteMetadataDTO metadata) {
         return siteLocalDS.saveSiteMetadata(metadata);
-    }
-
-    // Elimina la metadata del sitio en el repositorio local
-    public Completable deleteSiteMetadata(SiteMetadataDTO metadata) {
-        return siteLocalDS.deleteSiteMetadata();
     }
 
     // endregion

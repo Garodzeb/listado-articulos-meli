@@ -1,10 +1,15 @@
-package com.grodriguez.melisearchcore.model;
+package com.grodriguez.melisearchcore.model.domain;
 
-public class Category {
+public class SiteCategory {
     private String id = "";
     private String name = "";
 
-    public Category() {
+    public SiteCategory() {
+    }
+
+    public SiteCategory(String id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     // region GET-SET

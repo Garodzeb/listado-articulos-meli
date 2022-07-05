@@ -7,10 +7,8 @@ import io.reactivex.rxjava3.core.Single;
 
 public interface ISiteLocalDataSource {
 
-    Single<SiteMetadataDTO> getSiteMetadata();
+    Single<SiteMetadataDTO> getSiteMetadata(String siteId);
 
     Completable saveSiteMetadata(SiteMetadataDTO metadata);
-
-    Completable deleteSiteMetadata();
 
 }// End interface

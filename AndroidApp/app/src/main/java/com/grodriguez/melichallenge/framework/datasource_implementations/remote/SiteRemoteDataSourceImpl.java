@@ -1,6 +1,5 @@
 package com.grodriguez.melichallenge.framework.datasource_implementations.remote;
 
-import com.grodriguez.melichallenge.BuildConfig;
 import com.grodriguez.melichallenge.framework.network.retrofit.APIException;
 import com.grodriguez.melichallenge.framework.network.retrofit.apis.common.responses.CategoryGSonResponseEntity;
 import com.grodriguez.melichallenge.framework.network.retrofit.apis.site.IMeliSiteAPIService;
@@ -8,17 +7,14 @@ import com.grodriguez.melichallenge.framework.network.retrofit.apis.site.respons
 import com.grodriguez.melichallenge.framework.network.retrofit.apis.site.response.SiteMetadataGSonResponseEntity;
 import com.grodriguez.melichallenge.framework.network.retrofit.clients.MeliApiRetrofitClient;
 import com.grodriguez.melisearchcore.datasource_abstractions.site.ISiteRemoteDataSource;
-import com.grodriguez.melisearchcore.model.Category;
-import com.grodriguez.melisearchcore.model.Currency;
+import com.grodriguez.melisearchcore.model.domain.SiteCategory;
+import com.grodriguez.melisearchcore.model.domain.SiteCurrency;
 import com.grodriguez.melisearchcore.model.dtos.SiteMetadataDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.core.SingleSource;
-import io.reactivex.rxjava3.functions.Function;
-import retrofit2.Response;
 
 public class SiteRemoteDataSourceImpl implements ISiteRemoteDataSource {
 
@@ -29,8 +25,8 @@ public class SiteRemoteDataSourceImpl implements ISiteRemoteDataSource {
     }
 
     @Override
-    public Single<SiteMetadataDTO> getSiteMetadata() {
-        return meliSiteService.getSiteMetadata(BuildConfig.MELI_API_SITE).map(response -> {
+    public Single<SiteMetadataDTO> getSiteMetadata(String siteId) {
+        return meliSiteService.getSiteMetadata(siteId).map(response -> {
             // Controla si la consulta fue exitosa
             if (response.isSuccessful()) {
                 SiteMetadataGSonResponseEntity body = response.body();
@@ -43,10 +39,10 @@ public class SiteRemoteDataSourceImpl implements ISiteRemoteDataSource {
                     result.setCountryId(body.getCountryId());
                     result.setDefaultCurrencyId(body.getDefaultCurrencyId());
 
-                    List<Category> categories = new ArrayList<>();
+                    List<SiteCategory> categories = new ArrayList<>();
                     for(CategoryGSonResponseEntity responseCategory : body.getCategories())
                     {
-                        Category cat = new Category();
+                        SiteCategory cat = new SiteCategory();
                         cat.setId(responseCategory.getId());
                         cat.setName(responseCategory.getName());
 
@@ -54,10 +50,10 @@ public class SiteRemoteDataSourceImpl implements ISiteRemoteDataSource {
                     }
                     result.setCategories(categories);
 
-                    List<Currency> currencies = new ArrayList<>();
+                    List<SiteCurrency> currencies = new ArrayList<>();
                     for(CurrencyGSonResponseEntity responseCurr : body.getCurrencies())
                     {
-                        Currency curr = new Currency();
+                        SiteCurrency curr = new SiteCurrency();
                         curr.setId(responseCurr.getId());
                         curr.setSymbol(responseCurr.getSymbol());
 

@@ -1,6 +1,6 @@
 package com.grodriguez.melisearchcore.model.dtos;
 
-import com.grodriguez.melisearchcore.model.Shipping;
+import com.grodriguez.melisearchcore.model.domain.Shipping;
 
 public class SearchItemDTO {
 

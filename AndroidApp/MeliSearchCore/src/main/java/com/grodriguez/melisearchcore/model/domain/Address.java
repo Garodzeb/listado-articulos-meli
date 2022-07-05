@@ -1,4 +1,4 @@
-package com.grodriguez.melisearchcore.model;
+package com.grodriguez.melisearchcore.model.domain;
 
 public class Address {
     private String stateId = "";

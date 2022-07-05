@@ -1,8 +1,8 @@
 package com.grodriguez.melisearchcore.repositories;
 
-import com.grodriguez.melisearchcore.datasource_abstractions.items.IItemsLocalDataSource;
-import com.grodriguez.melisearchcore.datasource_abstractions.items.IItemssRemoteDataSource;
-import com.grodriguez.melisearchcore.model.SearchQuery;
+import com.grodriguez.melisearchcore.datasource_abstractions.items.ISearchQueryLocalDataSource;
+import com.grodriguez.melisearchcore.datasource_abstractions.items.IItemsRemoteDataSource;
+import com.grodriguez.melisearchcore.model.domain.SearchQuery;
 import com.grodriguez.melisearchcore.model.dtos.ItemDetailDTO;
 import com.grodriguez.melisearchcore.model.dtos.ItemRatingDTO;
 import com.grodriguez.melisearchcore.model.dtos.SearchResultDTO;
@@ -12,11 +12,11 @@ import io.reactivex.rxjava3.core.Single;
 
 public class ItemsRepository {
 
-    private IItemsLocalDataSource localItemsDS;
-    private IItemssRemoteDataSource remoteItemsDS;
+    private ISearchQueryLocalDataSource localItemsDS;
+    private IItemsRemoteDataSource remoteItemsDS;
 
-    public ItemsRepository(IItemsLocalDataSource localItemsDataSource,
-                           IItemssRemoteDataSource remoteItemsDataSource) {
+    public ItemsRepository(ISearchQueryLocalDataSource localItemsDataSource,
+                           IItemsRemoteDataSource remoteItemsDataSource) {
         this.localItemsDS = localItemsDataSource;
         this.remoteItemsDS = remoteItemsDataSource;
     }
@@ -29,13 +29,13 @@ public class ItemsRepository {
             // Guarda la query en el repositorio local antes de realizar la consulta al repositorio
             // remoto
             return localItemsDS.saveSearchItemQuery(query)
-                    .andThen(remoteItemsDS.searchItems(query.buildSearchQuery()));
+                    .andThen(remoteItemsDS.searchItems(query.getQuery(), query.buildSearchQuery()));
         } else
             return Single.error(new IllegalArgumentException("Empty query"));
     }
 
     // Vuelve a realizar la búsqueda de productos con los datos guardados en el repositorio local
-    public Single<SearchResultDTO> refreshItemsSearch() {
+    public Single<SearchResultDTO> refreshItemsSearch() throws Exception{
         return localItemsDS.getSearchItemQuery().flatMap(this::searchItems);
     }
 
@@ -45,19 +45,13 @@ public class ItemsRepository {
     }
 
     // Obtiene los datos de un artículo desde el repositorio remoto
+    // Posible optimización: realizar las llamadas a getItemDetails y getItemRating en paralelo y
+    // combinar los resultados
     public Single<ItemDetailDTO> getItemDetails(String itemId) {
         if (!itemId.isEmpty()) {
-            // Guarda el id del artículo en el repositorio local antes de ir a buscarlo al
-            // repositorio remoto
-            return localItemsDS.saveCurrentItemId(itemId)
-                    .andThen(remoteItemsDS.getItemDetails(itemId));
+            return remoteItemsDS.getItemDetails(itemId);
         } else
             return Single.error(new IllegalArgumentException("Empty productId"));
-    }
-
-    // Vuelve a buscar los datos del artículo guardado en memoria
-    public Single<ItemDetailDTO> refreshProductDetail() {
-        return localItemsDS.getCurrentItemId().flatMap(this::getItemDetails);
     }
 
     // Obtiene las reseñas de un artículo desde un repositorio remoto
@@ -66,16 +60,6 @@ public class ItemsRepository {
             return remoteItemsDS.getItemRatings(itemId);
         else
             return Single.error(new IllegalArgumentException("Empty productId"));
-    }
-
-    // Vuelve a buscar el rating del artículo con el código de artículo guardado en memoria
-    public Single<ItemRatingDTO> refreshItemRating() {
-        return localItemsDS.getCurrentItemId().flatMap(this::getItemRating);
-    }
-
-    // Elimina del cache el id del artículo actual
-    public Completable clearItemId() {
-        return localItemsDS.deleteCurrentItemId();
     }
 
     // endregion

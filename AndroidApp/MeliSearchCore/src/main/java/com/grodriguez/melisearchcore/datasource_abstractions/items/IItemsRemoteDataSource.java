@@ -8,9 +8,9 @@ import java.util.Map;
 
 import io.reactivex.rxjava3.core.Single;
 
-public interface IItemssRemoteDataSource {
+public interface IItemsRemoteDataSource {
 
-    Single<SearchResultDTO> searchItems(Map<String, String> queryParameters);
+    Single<SearchResultDTO> searchItems(String query, Map<String, String> queryParameters);
 
     Single<ItemDetailDTO> getItemDetails(String itemCode);
 

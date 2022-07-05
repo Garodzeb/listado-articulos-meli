@@ -1,8 +1,8 @@
 package com.grodriguez.melisearchcore.model.dtos;
 
-import com.grodriguez.melisearchcore.model.Filter;
-import com.grodriguez.melisearchcore.model.PagingMetadata;
-import com.grodriguez.melisearchcore.model.SortType;
+import com.grodriguez.melisearchcore.model.domain.Filter;
+import com.grodriguez.melisearchcore.model.domain.PagingMetadata;
+import com.grodriguez.melisearchcore.model.domain.SortType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class SearchResultDTO {
     }
 
     public void setResults(List<SearchItemDTO> results) {
-        this.results = results;
+        this.results = (results != null) ? results : new ArrayList<>();
     }
 
     public SortType getSort() {
@@ -50,7 +50,7 @@ public class SearchResultDTO {
     }
 
     public void setAvailableSorts(List<SortType> availableSorts) {
-        this.availableSorts = availableSorts;
+        this.availableSorts = (availableSorts != null) ? availableSorts : new ArrayList<>();
     }
 
     public List<Filter> getFilters() {
@@ -58,7 +58,7 @@ public class SearchResultDTO {
     }
 
     public void setFilters(List<Filter> filters) {
-        this.filters = filters;
+        this.filters = (filters != null) ? filters : new ArrayList<>();
     }
 
     public List<Filter> getAvailableFilters() {
@@ -66,7 +66,7 @@ public class SearchResultDTO {
     }
 
     public void setAvailableFilters(List<Filter> availableFilters) {
-        this.availableFilters = availableFilters;
+        this.availableFilters = (availableFilters != null) ? availableFilters : new ArrayList<>();
     }
 
     //endregion

@@ -1,4 +1,4 @@
-package com.grodriguez.melisearchcore.model;
+package com.grodriguez.melisearchcore.model.domain;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public class SearchQuery {
     }
 
     public void setParameters(List<QueryParameter> parameters) {
-        this.parameters = parameters;
+        this.parameters = (parameters != null) ? parameters : new ArrayList<>();
     }
 
     // endregion

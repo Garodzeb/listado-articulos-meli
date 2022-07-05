@@ -1,4 +1,4 @@
-package com.grodriguez.melisearchcore.model;
+package com.grodriguez.melisearchcore.model.domain;
 
 import java.util.ArrayList;
 import java.util.List;

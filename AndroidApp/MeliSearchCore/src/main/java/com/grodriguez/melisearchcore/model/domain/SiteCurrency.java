@@ -1,10 +1,15 @@
-package com.grodriguez.melisearchcore.model;
+package com.grodriguez.melisearchcore.model.domain;
 
-public class Currency {
+public class SiteCurrency {
     private String id = "";// Ej. "ARS"
     private String symbol = "";// Ej. "USD"
 
-    public Currency() {
+    public SiteCurrency() {
+    }
+
+    public SiteCurrency(String id, String symbol) {
+        this.id = id;
+        this.symbol = symbol;
     }
 
     // region GET-SET
