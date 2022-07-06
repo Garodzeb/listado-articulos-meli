@@ -28,7 +28,6 @@ public class SiteLocalDataSourceImpl implements ISiteLocalDataSource {
     private final SiteCategoriesDAO _siteCategoriesDao;
 
     public SiteLocalDataSourceImpl(Context context, AppRoomDatabase roomDB) {
-        //AppRoomDatabase roomDB = AppRoomDatabase.getInstance(context.getApplicationContext());
         _siteMetadataDao = roomDB.getSitesMetadataDao();
         _siteCategoriesDao = roomDB.getSiteCategoriesDao();
         _siteCurrenciesDao = roomDB.getSiteCurrenciesDao();
@@ -39,7 +38,7 @@ public class SiteLocalDataSourceImpl implements ISiteLocalDataSource {
         return _siteMetadataDao.getSiteMetadata(siteId).map(siteMetadataEntity ->
         {
             if (siteMetadataEntity == null) {
-                RoomDataEmptyException exception = new RoomDataEmptyException();
+                RoomNoDataException exception = new RoomNoDataException();
                 exception.setTable(AppConstants.SITE_METADATA_ROOM_TABLE_NAME);
                 exception.setParameters(siteId);
                 throw exception;
@@ -66,7 +65,7 @@ public class SiteLocalDataSourceImpl implements ISiteLocalDataSource {
 
                 } else {
                     // Si no pudo encontrar las categorías lanza una excepción
-                    RoomDataEmptyException catEexception = new RoomDataEmptyException();
+                    RoomNoDataException catEexception = new RoomNoDataException();
                     catEexception.setTable(AppConstants.SITE_CATEGORIES_ROOM_TABLE_NAME);
                     catEexception.setParameters(siteId);
                     throw catEexception;
@@ -86,7 +85,7 @@ public class SiteLocalDataSourceImpl implements ISiteLocalDataSource {
                     metadata.setCurrencies(siteCurrencies);
                 } else {
                     // Si no pudo encontrar las categorías lanza una excepción
-                    RoomDataEmptyException currException = new RoomDataEmptyException();
+                    RoomNoDataException currException = new RoomNoDataException();
                     currException.setTable(AppConstants.SITE_CURRENCIES_ROOM_TABLE_NAME);
                     currException.setParameters(siteId);
                     throw currException;

@@ -1,10 +1,10 @@
 package com.grodriguez.melisearchcore.model.domain;
 
 public class PagingMetadata {
-    private int total = 0;
-    private int primaryResults = 0;
-    private int offset = 0;
-    private int limit = 0;
+    private int total = -1;
+    private int primaryResults = -1;
+    private int offset = -1;
+    private int limit = -1;
 
     public PagingMetadata() {
     }

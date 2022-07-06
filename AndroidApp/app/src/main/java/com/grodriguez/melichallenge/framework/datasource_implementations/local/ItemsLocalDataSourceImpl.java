@@ -10,7 +10,7 @@ import com.grodriguez.melichallenge.framework.room.daos.SearchQueriesDAO;
 import com.grodriguez.melichallenge.framework.room.entities.search.QueryParametersRoomEntity;
 import com.grodriguez.melichallenge.framework.room.entities.search.SearchQueriesRoomEntity;
 import com.grodriguez.melichallenge.framework.utils.AppConstants;
-import com.grodriguez.melisearchcore.datasource_abstractions.items.ISearchQueryLocalDataSource;
+import com.grodriguez.melisearchcore.datasource_abstractions.items.IItemsLocalDataSource;
 import com.grodriguez.melisearchcore.model.domain.QueryParameter;
 import com.grodriguez.melisearchcore.model.domain.SearchQuery;
 
@@ -20,13 +20,12 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
-public class SearchQueryLocalDataSourceImpl implements ISearchQueryLocalDataSource {
+public class ItemsLocalDataSourceImpl implements IItemsLocalDataSource {
 
     private final SearchQueriesDAO _searchQueriesDao;
     private final QueryParametersDAO _queryParametersDao;
 
-    public SearchQueryLocalDataSourceImpl(Context context, AppRoomDatabase roomDB) {
-        //AppRoomDatabase roomDB = AppRoomDatabase.getInstance(context.getApplicationContext());
+    public ItemsLocalDataSourceImpl(Context context, AppRoomDatabase roomDB) {
         _searchQueriesDao = roomDB.getSearchQueriesDao();
         _queryParametersDao = roomDB.getQueryParametersDao();
     }
@@ -57,7 +56,7 @@ public class SearchQueryLocalDataSourceImpl implements ISearchQueryLocalDataSour
 
                 return searchQuery;
             } else {
-                RoomDataEmptyException exception = new RoomDataEmptyException();
+                RoomNoDataException exception = new RoomNoDataException();
                 exception.setTable(AppConstants.SEARCH_QUERIES_ROOM_TABLE_NAME);
                 throw exception;
             }

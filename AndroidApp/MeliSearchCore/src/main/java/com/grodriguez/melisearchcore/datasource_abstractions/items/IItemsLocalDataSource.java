@@ -5,7 +5,7 @@ import com.grodriguez.melisearchcore.model.domain.SearchQuery;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
-public interface ISearchQueryLocalDataSource {
+public interface IItemsLocalDataSource {
 
     Single<SearchQuery> getSearchItemQuery() throws Exception;
 

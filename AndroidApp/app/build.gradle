@@ -2,8 +2,21 @@ plugins {
     id 'com.android.application'
 }
 
+// Variables de entorno de configuración de la App
 def meliAPIUrl = (System.getenv("MELI_API_URL") != null) ? "\"${System.getenv("MELI_API_URL")}\"" : "\"\""
 def meliAPISite = (System.getenv("MELI_API_SITE") != null) ? "\"${System.getenv("MELI_API_SITE")}\"" : "\"\""
+
+// Variables de configuración del entorno de prueba
+def testValidAPISite = (System.getenv("TEST_VALID_API_SITE") != null) ? "\"${System.getenv("TEST_VALID_API_SITE")}\"" : "\"\""
+def testInvalidAPISite = (System.getenv("TEST_INVALID_API_SITE") != null) ? "\"${System.getenv("TEST_INVALID_API_SITE")}\"" : "\"\""
+def testValidItemId = (System.getenv("TEST_VALID_ITEM_ID") != null) ? "\"${System.getenv("TEST_VALID_ITEM_ID")}\"" : "\"\""
+def testInvalidItemId = (System.getenv("TEST_INVALID_ITEM_ID") != null) ? "\"${System.getenv("TEST_INVALID_ITEM_ID")}\"" : "\"\""
+def testValidSearchQuery = (System.getenv("TEST_VALID_SEARCH_QUERY") != null) ? "\"${System.getenv("TEST_VALID_SEARCH_QUERY")}\"" : "\"\""
+def testInvalidSearchQuery = (System.getenv("TEST_INVALID_SEARCH_QUERY") != null) ? "\"${System.getenv("TEST_INVALID_SEARCH_QUERY")}\"" : "\"\""
+def testValidFilterName1 = (System.getenv("TEST_VALID_FILTER_NAME_1") != null) ? "\"${System.getenv("TEST_VALID_FILTER_NAME_1")}\"" : "\"\""
+def testValidFilterValue1 = (System.getenv("TEST_VALID_FILTER_VALUE_1") != null) ? "\"${System.getenv("TEST_VALID_FILTER_VALUE_1")}\"" : "\"\""
+def testValidFilterName2 = (System.getenv("TEST_VALID_FILTER_NAME_2") != null) ? "\"${System.getenv("TEST_VALID_FILTER_NAME_2")}\"" : "\"\""
+def testValidFilterValue2 = (System.getenv("TEST_VALID_FILTER_VALUE_2") != null) ? "\"${System.getenv("TEST_VALID_FILTER_VALUE_2")}\"" : "\"\""
 
 android {
     compileSdk 32
@@ -17,10 +30,22 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "APP_LOG_TAG", "\"meli_challenge\""
-        buildConfigField "String", "MELI_API_URL", meliAPIUrl
-        buildConfigField "String", "MELI_API_SITE", meliAPISite
         buildConfigField "int", "APP_ROOM_DB_VERSION", "1"
         buildConfigField "String", "APP_ROOM_DB_NAME", "\"meli_database.db\""
+
+        buildConfigField "String", "MELI_API_URL", meliAPIUrl
+        buildConfigField "String", "MELI_API_SITE", meliAPISite
+
+        buildConfigField "String", "TEST_VALID_API_SITE", testValidAPISite
+        buildConfigField "String", "TEST_INVALID_API_SITE", testInvalidAPISite
+        buildConfigField "String", "TEST_VALID_ITEM_ID", testValidItemId
+        buildConfigField "String", "TEST_INVALID_ITEM_ID", testInvalidItemId
+        buildConfigField "String", "TEST_VALID_SEARCH_QUERY", testValidSearchQuery
+        buildConfigField "String", "TEST_INVALID_SEARCH_QUERY", testInvalidSearchQuery
+        buildConfigField "String", "TEST_VALID_FILTER_NAME_1", testValidFilterName1
+        buildConfigField "String", "TEST_VALID_FILTER_VALUE_1", testValidFilterValue1
+        buildConfigField "String", "TEST_VALID_FILTER_NAME_2", testValidFilterName2
+        buildConfigField "String", "TEST_VALID_FILTER_VALUE_2", testValidFilterValue2
     }
 
     buildTypes {

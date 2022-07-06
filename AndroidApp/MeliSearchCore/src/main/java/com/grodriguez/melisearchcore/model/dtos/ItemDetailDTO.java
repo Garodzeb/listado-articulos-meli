@@ -14,9 +14,9 @@ public class ItemDetailDTO {
     private Shipping shipping = new Shipping();
     private String categoryId = "";
     private String condition = "";
-    private double price = 0;
+    private double price = -1;
     private List<ItemPicture> pictures = new ArrayList<>();
-    private float availableQty = 0;
+    private float availableQty = -1;
     private String warranty = "";
     private ItemRatingDTO itemRating = new ItemRatingDTO();
 

@@ -1,6 +1,6 @@
 package com.grodriguez.melisearchcore.repositories;
 
-import com.grodriguez.melisearchcore.datasource_abstractions.items.ISearchQueryLocalDataSource;
+import com.grodriguez.melisearchcore.datasource_abstractions.items.IItemsLocalDataSource;
 import com.grodriguez.melisearchcore.datasource_abstractions.items.IItemsRemoteDataSource;
 import com.grodriguez.melisearchcore.model.domain.SearchQuery;
 import com.grodriguez.melisearchcore.model.dtos.ItemDetailDTO;
@@ -12,10 +12,10 @@ import io.reactivex.rxjava3.core.Single;
 
 public class ItemsRepository {
 
-    private ISearchQueryLocalDataSource localItemsDS;
+    private IItemsLocalDataSource localItemsDS;
     private IItemsRemoteDataSource remoteItemsDS;
 
-    public ItemsRepository(ISearchQueryLocalDataSource localItemsDataSource,
+    public ItemsRepository(IItemsLocalDataSource localItemsDataSource,
                            IItemsRemoteDataSource remoteItemsDataSource) {
         this.localItemsDS = localItemsDataSource;
         this.remoteItemsDS = remoteItemsDataSource;
@@ -55,7 +55,7 @@ public class ItemsRepository {
     }
 
     // Obtiene las reseñas de un artículo desde un repositorio remoto
-    public Single<ItemRatingDTO> getItemRating(String itemId) {
+    public Single<ItemRatingDTO> getItemRatings(String itemId) {
         if (!itemId.isEmpty())
             return remoteItemsDS.getItemRatings(itemId);
         else

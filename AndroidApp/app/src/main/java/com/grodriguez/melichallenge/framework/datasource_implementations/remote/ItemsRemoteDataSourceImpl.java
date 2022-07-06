@@ -207,6 +207,7 @@ public class ItemsRemoteDataSourceImpl implements IItemsRemoteDataSource {
                     result.setId(body.getId());
                     result.setTitle(body.getTitle());
                     result.setWarranty(body.getWarranty());
+                    result.setCategoryId(body.getCategoryId());
                     result.setCurrencyId(body.getCurrencyId());
                     result.setPrice(body.getPrice());
                     result.setCondition(body.getCondition());

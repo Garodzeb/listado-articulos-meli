@@ -8,19 +8,17 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.grodriguez.melichallenge.framework.datasource_implementations.local.SiteLocalDataSourceImpl;
 import com.grodriguez.melichallenge.framework.room.AppRoomDatabase;
-import com.grodriguez.melisearchcore.model.domain.SiteCategory;
-import com.grodriguez.melisearchcore.model.domain.SiteCurrency;
+import com.grodriguez.melichallenge.mockups.SiteMetadataMockupFactory;
+import com.grodriguez.melichallenge.validators.SiteMetadataValidator;
 import com.grodriguez.melisearchcore.model.dtos.SiteMetadataDTO;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.Result;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class SiteLocalDataSourceTest {
@@ -43,39 +41,13 @@ public class SiteLocalDataSourceTest {
     // Valida que se pueda guardar y leer la metadata del sitio desde la base de datos de Room
     @Test
     public void readWriteTest() {
-        SiteMetadataDTO testData = createTestMetadata();
+        SiteMetadataDTO testData = SiteMetadataMockupFactory.createTestMetadata();
 
         SiteMetadataDTO result = localDataSource.saveSiteMetadata(testData)
                 .andThen(localDataSource.getSiteMetadata(testData.getId())).blockingGet();
 
-        Assert.assertNotNull(result);
-        Assert.assertEquals(result.getId(), testData.getId());
-        Assert.assertEquals(result.getName(), testData.getName());
-        Assert.assertEquals(result.getCountryId(), testData.getCountryId());
-        Assert.assertEquals(result.getDefaultCurrencyId(), testData.getDefaultCurrencyId());
-        Assert.assertEquals(result.getCategories().size(), testData.getCategories().size());
-        Assert.assertEquals(result.getCurrencies().size(), testData.getCurrencies().size());
+        // Compara que los datos traidos de la BD sean iguales a los datos de prueba generados
+        SiteMetadataValidator.compareSiteData(testData, result);
     }
-
-    private SiteMetadataDTO createTestMetadata() {
-        SiteMetadataDTO dto = new SiteMetadataDTO();
-        dto.setId("MLU");
-        dto.setName("Uruguay");
-        dto.setCountryId("Uy");
-        dto.setDefaultCurrencyId("UYU");
-
-        List<SiteCategory> categories = new ArrayList<>();
-        categories.add(new SiteCategory("MLU5725", "Accesorios para Vehículos"));
-        categories.add(new SiteCategory("MLU1512", "Agro"));
-        dto.setCategories(categories);
-
-        List<SiteCurrency> currencies = new ArrayList<>();
-        currencies.add(new SiteCurrency("UYU", "$"));
-        currencies.add(new SiteCurrency("USD", "U$S"));
-        dto.setCurrencies(currencies);
-
-        return dto;
-    }
-
 
 }// End Class

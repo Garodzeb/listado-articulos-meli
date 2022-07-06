@@ -2,7 +2,7 @@ package com.grodriguez.melichallenge.framework.datasource_implementations.local;
 
 // Custom exception utilizada para informar a la interfaz que no se pudo recuperar información de la
 // base de room
-public class RoomDataEmptyException extends Exception {
+public class RoomNoDataException extends Exception {
 
     // Tabla a la que se realizó la consulta
     private String table;

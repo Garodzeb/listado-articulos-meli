@@ -11,7 +11,7 @@ import retrofit2.http.Path;
 
 public interface IMeliSiteAPIService {
 
-    @Headers("")
+    @Headers("Content-Type: application/json")
     @GET("sites/{siteId}")
     Single<Response<SiteMetadataGSonResponseEntity>> getSiteMetadata(@Path("siteId") String siteId);
 
