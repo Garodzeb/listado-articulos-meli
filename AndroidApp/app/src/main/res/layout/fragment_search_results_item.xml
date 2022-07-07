@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/txt_frag_search_results_item_free_shipping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/free_shipping_badge_text_color"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/txt_frag_search_results_item_price"
+                app:layout_constraintTop_toBottomOf="@+id/txt_frag_search_results_item_price"
+                tools:ignore="TextContrastCheck"
+                tools:text="Envío gratis"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/txt_frag_search_results_item_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img_frag_search_results_item_image"
+                app:layout_constraintTop_toBottomOf="@+id/txt_frag_search_results_item_best_seller"
+                tools:text="Oculus Quest 2 128 Gb Advanced All-in-one" />
+
+            <TextView
+                android:id="@+id/txt_frag_search_results_item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/txt_frag_search_results_item_title"
+                app:layout_constraintTop_toBottomOf="@+id/txt_frag_search_results_item_title"
+                tools:text="U$S 559" />
+
+            <ImageView
+                android:id="@+id/img_frag_search_results_item_image"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:contentDescription="@string/img_search_result_item_content_desc"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/txt_frag_search_results_item_best_seller"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/textview_round_5_background"
+                android:backgroundTint="@color/best_seller_badge_background_color"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="@string/lbl_best_seller_text"
+                android:textAllCaps="true"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@+id/img_frag_search_results_item_image"
+                app:layout_constraintTop_toTopOf="@+id/img_frag_search_results_item_image"
+                tools:ignore="TextContrastCheck"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/img_frag_search_results_item_favorite"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/ic_favorite_background"
+                app:layout_constraintEnd_toEndOf="@+id/img_frag_search_results_item_image"
+                app:layout_constraintTop_toTopOf="@+id/img_frag_search_results_item_image"
+                app:srcCompat="@drawable/ic_favorite_border_24" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

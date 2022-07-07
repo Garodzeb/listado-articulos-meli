@@ -6,4 +6,102 @@
     android:layout_height="match_parent"
     tools:context=".presentation.search_product.MainActivity">
 
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/md_theme_dark_surface"
+            android:padding="20dp"
+            android:translationZ="5dp">
+
+            <EditText
+                android:id="@+id/txt_activity_main_search_query"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autofillHints=""
+                android:background="@drawable/textview_round_100_backgroud"
+                android:ems="10"
+                android:hint="@string/txt_search_item_hint"
+                android:inputType="text"
+                android:minHeight="48dp"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textColorHint="@color/text_hint_color" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:translationZ="5dp">
+
+            <TextView
+                android:id="@+id/lbl_activity_main_search_result_qty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingStart="15dp"
+                tools:text="54 resultados" />
+
+            <Button
+                android:id="@+id/btn_activity_main_search_filters"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_button_color"
+                app:icon="@drawable/ic_outline_expand_more_24"
+                app:iconGravity="end"
+                app:iconSize="28dp"
+                app:iconTint="@color/text_button_color"
+                tools:text="Filtrar (1) " />
+
+        </TableRow>
+    </TableLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_activity_main_search_results_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scrollbars="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
+        tools:itemCount="10"
+        tools:listitem="@layout/fragment_search_results_item"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/lbl_activity_main_no_search_results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_no_items_found"
+        android:textColor="@color/text_hint_color"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
+        tools:visibility="gone" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
