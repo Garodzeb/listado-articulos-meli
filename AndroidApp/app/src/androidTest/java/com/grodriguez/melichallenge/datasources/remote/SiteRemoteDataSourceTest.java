@@ -28,7 +28,7 @@ public class SiteRemoteDataSourceTest {
 
     // Prueba obtener la metadata de un sitio válido
     @Test
-    public void getValidSiteMetadataTest() {
+    public void get_ValidSiteMetadata_returnsSiteMetadataDTO() {
         SiteMetadataDTO siteData = remoteDataSource
                 .getSiteMetadata(TestConstants.TEST_VALID_SITE)
                 .blockingGet();
@@ -36,7 +36,7 @@ public class SiteRemoteDataSourceTest {
     }
 
     @Test
-    public void getInvalidSiteMetadataTest() {
+    public void get_InvalidSiteMetadata_throwsAPIException() {
         try {
             remoteDataSource.getSiteMetadata(TestConstants.TEST_INVALID_SITE);
         }

@@ -39,27 +39,29 @@ public class ItemsLocalDataSourceTest {
         localDataSource = new ItemsLocalDataSourceImpl(appContext, testDatabase);
     }
 
-    @After
-    public void closeDb() throws IOException {
-        testDatabase.close();
-    }
-
     // Prueba que se pueda guardar una query en la base de datos y que se esta se pueda recuperar
     @Test
-    public void readWriteTest() throws Exception {
+    public void read_savedItemQuery_returnsSearchQuery() throws Exception {
+        // Crea un query con datos de prueba
         SearchQuery testData = SearchQueryMockupFactory.createValidSearchQueryWithParams();
+
+        // Guarda la query en la base y después la recupera
         SearchQuery result = localDataSource.saveSearchItemQuery(testData)
                 .andThen(localDataSource.getSearchItemQuery()).blockingGet();
 
+        // Valida que el resultado no sea null y que el contenido leido de la base sea igual
+        // al contenido del query de prueba
         Assert.assertNotNull(result);
         SearchQueryValidator.compareSearchQueries(testData, result);
     }
 
     // Valida que después de eliminar una query de la base de datos esta ya no puede ser leída
     @Test(expected = EmptyResultSetException.class)
-    public void deleteTest() {
+    public void delete_searchQuery_throwsEmptyResultSetException() {
         SearchQuery testData = SearchQueryMockupFactory.createValidSearchQueryWithParams();
 
+        // Guarda un dato de prueba, lo elimina de la base y trata de recuperarlo, esto debe generar
+        // una excepción de tipo EmptyResultSetException
         SearchQuery result = localDataSource.saveSearchItemQuery(testData)
                 .andThen(localDataSource.deleteSearchItemQuery())
                 .andThen(localDataSource.getSearchItemQuery()).blockingGet();

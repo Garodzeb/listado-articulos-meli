@@ -45,3 +45,6 @@ Se utiliza la librería de [Retrofit](https://square.github.io/retrofit/) para s
 
 ## RxJava
 Se utiliza la librería de [RxJava](https://github.com/ReactiveX/RxJava) para poder simplificar el manejo de los threads durante el desarrollo de la aplicación.
+
+## Picasso
+Se utiliza la Librería de [Picasso](https://square.github.io/picasso/) para facilitar la carga de imágenes ya que permite cargar las imágenes en un ImageView pasando un URL. 

@@ -11,4 +11,24 @@ public class AppConstants {
     public static final String SITE_METADATA_ROOM_TABLE_NAME = "t_sites_metadata";
 
     // endregion
+
+    // region Shared Preferences
+
+    public static final String SHARED_PREFERENCE_FILE_ID = "MELI_CHALLENGE";
+    public static final String LAST_SEARCH_QUERY_SHARED_PREFERENCE_KEY = "LAST_SEARCH_QUERY";
+
+    // endregion
+
+    // region Log
+
+    public static final String APP_LOG_TAG = "MELI_CHALLENGE";
+
+    // endregion
+
+    // region Main Activity
+
+    public static final int MAX_SEARCH_RESULTS_DISPLAY_QTY = 2000;
+
+    // endregion
+
 }// End Class

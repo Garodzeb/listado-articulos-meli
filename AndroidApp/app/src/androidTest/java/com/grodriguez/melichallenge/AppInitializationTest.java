@@ -16,7 +16,7 @@ public class AppInitializationTest {
 
     // Valida que se haya seteado la variable de entorno con la URL de la API a consultar
     @Test
-    public void envVarMeliApiURLTest() {
+    public void get_envVar_MeliApiURL_returnsString() {
         Assert.assertNotEquals("Variable de entorno 'MELI_API_URL' no puede ser vacía",
                 "",
                 BuildConfig.MELI_API_URL);
@@ -24,70 +24,70 @@ public class AppInitializationTest {
 
     // Valida que se haya seteado el sitio por defecto a utilizar para consultar a la API
     @Test
-    public void envVarMeliApiSiteTest() {
+    public void get_envVar_MeliApiSite_returnsString() {
         Assert.assertNotEquals("Variable de entorno 'MELI_API_SITE' no puede ser vacía",
                 "",
                 BuildConfig.MELI_API_SITE);
     }
 
     @Test
-    public void envVarTestValidSiteTest() {
+    public void get_envVar_TestValidSite_returnsString() {
         Assert.assertNotEquals("Variable de entorno 'TEST_VALID_API_SITE' no puede ser vacía",
                 "",
                 BuildConfig.TEST_VALID_API_SITE);
     }
 
     @Test
-    public void envVarTestInvalidSiteTest() {
+    public void get_envVar_TestInvalidSite_returnsString() {
         Assert.assertNotEquals("Variable de entorno 'TEST_INVALID_API_SITE' no puede ser vacía",
                 "",
                 BuildConfig.TEST_INVALID_API_SITE);
     }
 
     @Test
-    public void envVarTestValidItemIdTest() {
+    public void get_envVar_TestValidItemId_returnsString() {
         Assert.assertNotEquals("Variable de entorno 'TEST_VALID_ITEM_ID' no puede ser vacía",
                 "",
                 BuildConfig.TEST_VALID_ITEM_ID);
     }
 
     @Test
-    public void envVarTestInvalidItemIdTest() {
+    public void get_envVar_TestInvalidItemId_returnsString() {
         Assert.assertNotEquals("Variable de entorno 'TEST_INVALID_ITEM_ID' no puede ser vacía",
                 "",
                 BuildConfig.TEST_INVALID_ITEM_ID);
     }
 
     @Test
-    public void envVarValidSearchQueryTest() {
+    public void get_envVar_ValidSearchQuery_returnsString() {
         Assert.assertNotEquals("Variable de entorno 'TEST_VALID_SEARCH_QUERY' no puede ser vacía",
                 "",
                 BuildConfig.TEST_VALID_SEARCH_QUERY);
     }
 
     @Test
-    public void envVarInvalidSearchQueryTest() {
+    public void get_envVar_InvalidSearchQuery_returnsString() {
         Assert.assertNotEquals("Variable de entorno 'TEST_INVALID_SEARCH_QUERY' no puede ser vacía",
                 "",
                 BuildConfig.TEST_INVALID_SEARCH_QUERY);
     }
 
     @Test
-    public void envVarValidFilterName1Test() {
+    public void get_envVar_ValidFilterName1_returnsString() {
         Assert.assertNotEquals("Variable de entorno 'TEST_VALID_FILTER_NAME_1' no puede ser vacía",
                 "",
                 BuildConfig.TEST_VALID_FILTER_NAME_1);
     }
 
     @Test
-    public void envVarValidFilterName2Test() {
+    public void get_envVar_ValidFilterName2_returnsString() {
         Assert.assertNotEquals("Variable de entorno 'TEST_VALID_FILTER_NAME_2' no puede ser vacía",
                 "",
                 BuildConfig.TEST_VALID_FILTER_NAME_2);
     }
 
     @Test
-    public void envVarValidFilterValue2Test() {
+    public void get_envVar_ValidFilterValue2_returnsString() {
         Assert.assertNotEquals("Variable de entorno 'TEST_VALID_FILTER_VALUE_2' no puede ser vacía",
                 "",
                 BuildConfig.TEST_VALID_FILTER_VALUE_2);

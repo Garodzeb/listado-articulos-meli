@@ -9,6 +9,7 @@ import com.grodriguez.melisearchcore.model.dtos.SearchResultDTO;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.functions.Function;
 
 public class ItemsRepository {
 
@@ -35,7 +36,7 @@ public class ItemsRepository {
     }
 
     // Vuelve a realizar la búsqueda de productos con los datos guardados en el repositorio local
-    public Single<SearchResultDTO> refreshItemsSearch() throws Exception{
+    public Single<SearchResultDTO> recoverItemsSearch() throws Exception{
         return localItemsDS.getSearchItemQuery().flatMap(this::searchItems);
     }
 

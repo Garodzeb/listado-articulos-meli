@@ -33,14 +33,9 @@ public class SiteLocalDataSourceTest {
         localDataSource = new SiteLocalDataSourceImpl(appContext, testDatabase);
     }
 
-    @After
-    public void closeDb() throws IOException {
-        testDatabase.close();
-    }
-
     // Valida que se pueda guardar y leer la metadata del sitio desde la base de datos de Room
     @Test
-    public void readWriteTest() {
+    public void read_savedSiteMetadata_returnsSiteMetadataDTO() {
         SiteMetadataDTO testData = SiteMetadataMockupFactory.createTestMetadata();
 
         SiteMetadataDTO result = localDataSource.saveSiteMetadata(testData)

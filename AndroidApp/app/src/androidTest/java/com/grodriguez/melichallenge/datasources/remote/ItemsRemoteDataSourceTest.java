@@ -36,36 +36,48 @@ public class ItemsRemoteDataSourceTest {
 
     // Realiza una prueba buscando una búsqueda de artículos sin parámetros de búsqueda
     @Test
-    public void searchItemsNoParametersTest() {
+    public void searchItems_NoParameters_returnsSearhResultDTO() {
         SearchQuery query = SearchQueryMockupFactory.createValidNoParamsSearchQuery();
-        evaluateSearchQuery(query);
+
+        SearchResultDTO searchResult = remoteDataSource.searchItems(
+                        query.getQuery(),
+                        query.buildSearchQuery())
+                .blockingGet();
+
+        SearchQueryValidator.evaluateSearchResult(searchResult);
     }
 
     // Realiza una prueba buscando una búsqueda de artículos con parámetros de búsqueda
     @Test
-    public void searchItemsWithParametersTest() {
+    public void searchItems_WithParameters_returnsSearchResultDTO() {
         // Crea la consulta a hacer a la API
         SearchQuery query = SearchQueryMockupFactory.createValidSearchQueryWithParams();
-        evaluateSearchQuery(query);
+        SearchResultDTO searchResult = remoteDataSource.searchItems(
+                        query.getQuery(),
+                        query.buildSearchQuery())
+                .blockingGet();
+
+        SearchQueryValidator.evaluateSearchResult(searchResult);
     }
 
     // Valida que se devuelva un objeto válido del dominio en el caso de que la consulta
     // no retorne ningún resultado y no tenga ningún filtro aplicado
     @Test
-    public void searchItemsNoResultsNoParametersQuery() {
+    public void searchItems_NoResultsNoParameters_returnsSearchResultDTO() {
         // Crea la consulta a hacer a la API
         SearchQuery query = SearchQueryMockupFactory.createInvalidNoParamsSearchQuery();
-        evaluateSearchQuery(query);
+        SearchResultDTO searchResult = remoteDataSource.searchItems(
+                        query.getQuery(),
+                        query.buildSearchQuery())
+                .blockingGet();
+
+        SearchQueryValidator.evaluateSearchResult(searchResult);
     }
 
     @Test
-    public void searchItemsNoResultsWithParametersQuery() {
+    public void searchItems_NoResultsWithParameters_returnsSearchResultDTO() {
         // Crea la consulta a hacer a la API
         SearchQuery query = SearchQueryMockupFactory.createInvalidSearchQueryWithParams();
-        evaluateSearchQuery(query);
-    }
-
-    private void evaluateSearchQuery(SearchQuery query) {
         SearchResultDTO searchResult = remoteDataSource.searchItems(
                         query.getQuery(),
                         query.buildSearchQuery())
@@ -80,14 +92,14 @@ public class ItemsRemoteDataSourceTest {
 
     // Valida obtener los detalles de un artículo
     @Test
-    public void getItemDetailsTest() {
+    public void get_ItemDetails_returnsItemDetailDTO() {
         ItemDetailDTO item = remoteDataSource.getItemDetails(TestConstants.TEST_VALID_ITEM_ID).blockingGet();
         ItemDetailValidator.evaluateGetItemDetailsResult(item);
     }
 
     // Valida que se lance una excepción al buscar los datos de un artículo no existente
     @Test
-    public void getNonExistentItemDetailsTest() {
+    public void get_InvalidItemDetails_throwsAPIException() {
         try {
             remoteDataSource.getItemDetails(TestConstants.TEST_INVALID_ITEM_ID);
         } catch (Exception ex) {
@@ -101,16 +113,16 @@ public class ItemsRemoteDataSourceTest {
 
     // Valida que se puedan recuperar las reseñas de un artículo
     @Test
-    public void getItemRatingsTest() {
-        ItemRatingDTO rating = remoteDataSource.getItemRatings("MLU600098464").blockingGet();
+    public void get_ItemRatings_returnsItemRatingDTO() {
+        ItemRatingDTO rating = remoteDataSource.getItemRatings(TestConstants.TEST_VALID_ITEM_ID).blockingGet();
         ItemRatingsValidator.evaluateItemRatingsResult(rating);
     }
 
     // Valida la excepción que se lanza cuando no se puede recuperar el rating de un artículo
     @Test
-    public void getNonExistentItemRatingsTest() {
+    public void get_InvalidItemRatings_throwsAPIException() {
         try {
-            remoteDataSource.getItemRatings("La-Li-Lu-Le-Lo");
+            remoteDataSource.getItemRatings(TestConstants.TEST_INVALID_ITEM_ID);
         } catch (Exception ex) {
             APIExceptionValidator.evaluateAPIExceptionData(ex);
         }
