@@ -1,7 +1,7 @@
 package com.grodriguez.melichallenge.validators;
 
-import com.grodriguez.melisearchcore.model.domain.PagingMetadata;
-import com.grodriguez.melisearchcore.model.domain.SearchQuery;
+import com.grodriguez.melisearchcore.model.domain.search.PagingMetadata;
+import com.grodriguez.melisearchcore.model.domain.search.SearchQuery;
 import com.grodriguez.melisearchcore.model.dtos.SearchResultDTO;
 
 import org.junit.Assert;

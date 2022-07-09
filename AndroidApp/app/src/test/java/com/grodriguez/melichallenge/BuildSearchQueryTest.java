@@ -1,7 +1,7 @@
 package com.grodriguez.melichallenge;
 
-import com.grodriguez.melisearchcore.model.domain.QueryParameter;
-import com.grodriguez.melisearchcore.model.domain.SearchQuery;
+import com.grodriguez.melisearchcore.model.domain.search.QueryParameter;
+import com.grodriguez.melisearchcore.model.domain.search.SearchQuery;
 
 import org.junit.Assert;
 import org.junit.Test;

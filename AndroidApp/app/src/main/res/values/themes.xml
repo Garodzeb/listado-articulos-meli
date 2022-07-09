@@ -30,4 +30,13 @@
         <item name="elevationOverlayColor">@color/md_theme_light_surfaceTint</item>
         <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
     </style>
+
+    <style name="filtersRadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="buttonTint">@color/text_button_color</item>
+    </style>
+
+    <style name="filtersCheckbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/text_button_color</item>
+    </style>
+
 </resources>

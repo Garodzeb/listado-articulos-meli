@@ -1,7 +1,7 @@
 package com.grodriguez.melichallenge.mockups;
 
-import com.grodriguez.melisearchcore.model.domain.SiteCategory;
-import com.grodriguez.melisearchcore.model.domain.SiteCurrency;
+import com.grodriguez.melisearchcore.model.domain.site.SiteCategory;
+import com.grodriguez.melisearchcore.model.domain.site.SiteCurrency;
 import com.grodriguez.melisearchcore.model.dtos.SiteMetadataDTO;
 
 import java.util.ArrayList;

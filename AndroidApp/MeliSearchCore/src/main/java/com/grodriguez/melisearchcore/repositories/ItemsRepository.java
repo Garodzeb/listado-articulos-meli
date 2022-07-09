@@ -2,14 +2,13 @@ package com.grodriguez.melisearchcore.repositories;
 
 import com.grodriguez.melisearchcore.datasource_abstractions.items.IItemsLocalDataSource;
 import com.grodriguez.melisearchcore.datasource_abstractions.items.IItemsRemoteDataSource;
-import com.grodriguez.melisearchcore.model.domain.SearchQuery;
+import com.grodriguez.melisearchcore.model.domain.search.SearchQuery;
 import com.grodriguez.melisearchcore.model.dtos.ItemDetailDTO;
 import com.grodriguez.melisearchcore.model.dtos.ItemRatingDTO;
 import com.grodriguez.melisearchcore.model.dtos.SearchResultDTO;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.functions.Function;
 
 public class ItemsRepository {
 

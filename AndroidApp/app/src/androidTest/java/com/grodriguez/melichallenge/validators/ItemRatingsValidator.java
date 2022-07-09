@@ -1,6 +1,6 @@
 package com.grodriguez.melichallenge.validators;
 
-import com.grodriguez.melisearchcore.model.domain.PagingMetadata;
+import com.grodriguez.melisearchcore.model.domain.search.PagingMetadata;
 import com.grodriguez.melisearchcore.model.dtos.ItemRatingDTO;
 
 import org.junit.Assert;

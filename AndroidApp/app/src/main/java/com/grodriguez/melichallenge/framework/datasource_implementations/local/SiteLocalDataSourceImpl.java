@@ -11,8 +11,8 @@ import com.grodriguez.melichallenge.framework.room.entities.site.SiteCurrenciesR
 import com.grodriguez.melichallenge.framework.room.entities.site.SiteMetadataRoomEntity;
 import com.grodriguez.melichallenge.framework.utils.AppConstants;
 import com.grodriguez.melisearchcore.datasource_abstractions.site.ISiteLocalDataSource;
-import com.grodriguez.melisearchcore.model.domain.SiteCategory;
-import com.grodriguez.melisearchcore.model.domain.SiteCurrency;
+import com.grodriguez.melisearchcore.model.domain.site.SiteCategory;
+import com.grodriguez.melisearchcore.model.domain.site.SiteCurrency;
 import com.grodriguez.melisearchcore.model.dtos.SiteMetadataDTO;
 
 import java.util.ArrayList;

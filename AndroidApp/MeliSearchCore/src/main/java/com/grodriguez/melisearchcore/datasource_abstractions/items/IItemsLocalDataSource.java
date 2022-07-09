@@ -1,6 +1,6 @@
 package com.grodriguez.melisearchcore.datasource_abstractions.items;
 
-import com.grodriguez.melisearchcore.model.domain.SearchQuery;
+import com.grodriguez.melisearchcore.model.domain.search.SearchQuery;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;

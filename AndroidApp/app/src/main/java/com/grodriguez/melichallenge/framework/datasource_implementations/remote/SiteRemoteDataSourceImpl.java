@@ -7,8 +7,8 @@ import com.grodriguez.melichallenge.framework.network.retrofit.apis.site.respons
 import com.grodriguez.melichallenge.framework.network.retrofit.apis.site.response.SiteMetadataGSonResponseEntity;
 import com.grodriguez.melichallenge.framework.network.retrofit.clients.MeliApiRetrofitClient;
 import com.grodriguez.melisearchcore.datasource_abstractions.site.ISiteRemoteDataSource;
-import com.grodriguez.melisearchcore.model.domain.SiteCategory;
-import com.grodriguez.melisearchcore.model.domain.SiteCurrency;
+import com.grodriguez.melisearchcore.model.domain.site.SiteCategory;
+import com.grodriguez.melisearchcore.model.domain.site.SiteCurrency;
 import com.grodriguez.melisearchcore.model.dtos.SiteMetadataDTO;
 
 import java.util.ArrayList;

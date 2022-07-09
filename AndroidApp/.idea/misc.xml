@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.211" />
         <entry key="app/src/main/res/drawable/ic_empty_star_24.xml" value="0.211" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1835" />
+        <entry key="app/src/main/res/drawable/ic_outline_expand_less_24.xml" value="0.211" />
         <entry key="app/src/main/res/drawable/ic_outline_expand_more_24.xml" value="0.115" />
         <entry key="app/src/main/res/drawable/ic_rating_empty_star_24.xml" value="0.211" />
         <entry key="app/src/main/res/drawable/ic_rating_full_star_24.xml" value="0.211" />
@@ -21,7 +22,17 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20189971923828126" />
         <entry key="app/src/main/res/layout/activity_product_detail.xml" value="0.22534590119343387" />
         <entry key="app/src/main/res/layout/content_product_detail.xml" value="0.10364583333333334" />
+        <entry key="app/src/main/res/layout/dialog_fragment_search_filters.xml" value="0.2720464070638021" />
         <entry key="app/src/main/res/layout/fragment_boolean_filter.xml" value="0.16509104287129162" />
+        <entry key="app/src/main/res/layout/fragment_filter_type_boolean.xml" value="0.3034013605442177" />
+        <entry key="app/src/main/res/layout/fragment_filter_type_categories.xml" value="0.3484375" />
+        <entry key="app/src/main/res/layout/fragment_filter_type_checkbox.xml" value="0.3838381244761734" />
+        <entry key="app/src/main/res/layout/fragment_filter_type_number.xml" value="0.22295125325520831" />
+        <entry key="app/src/main/res/layout/fragment_filter_type_radiobutton.xml" value="0.4005069708491762" />
+        <entry key="app/src/main/res/layout/fragment_filter_type_range.xml" value="0.3259384155273437" />
+        <entry key="app/src/main/res/layout/fragment_filter_type_sort.xml" value="0.10364583333333334" />
+        <entry key="app/src/main/res/layout/fragment_filter_type_string.xml" value="0.10364583333333334" />
+        <entry key="app/src/main/res/layout/fragment_filter_type_text.xml" value="0.10364583333333334" />
         <entry key="app/src/main/res/layout/fragment_number_filter.xml" value="0.11676798378926039" />
         <entry key="app/src/main/res/layout/fragment_range_filter.xml" value="0.11676798378926039" />
         <entry key="app/src/main/res/layout/fragment_search_filters.xml" value="0.24010416666666667" />

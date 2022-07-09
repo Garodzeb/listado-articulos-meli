@@ -1,22 +1,37 @@
-package com.grodriguez.melisearchcore.model.dtos;
+package com.grodriguez.melisearchcore.model.domain.search;
 
-import com.grodriguez.melisearchcore.model.domain.search.Filter;
-import com.grodriguez.melisearchcore.model.domain.search.PagingMetadata;
-import com.grodriguez.melisearchcore.model.domain.search.SortType;
+import com.grodriguez.melisearchcore.model.dtos.SearchItemDTO;
+import com.grodriguez.melisearchcore.model.dtos.SearchResultDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchResultDTO {
+public class SearchResult {
 
     private PagingMetadata paging = new PagingMetadata();
-    private List<SearchItemDTO> results = new ArrayList<>();
+    private List<SearchItem> results = new ArrayList<>();
     private SortType sort = new SortType();
     private List<SortType> availableSorts = new ArrayList<>();
     private List<Filter> filters = new ArrayList<>();
     private List<Filter> availableFilters = new ArrayList<>();
 
-    public SearchResultDTO() {
+    public SearchResult() {
+    }
+
+    public SearchResult(SearchResultDTO dto) {
+        this.paging = dto.getPaging();
+        this.sort = dto.getSort();
+        this.availableSorts = dto.getAvailableSorts();
+        this.filters = dto.getFilters();
+        this.availableFilters = dto.getAvailableFilters();
+
+        this.results = new ArrayList<>();
+
+        for(SearchItemDTO itemDto : dto.getResults())
+        {
+            SearchItem item = new SearchItem(itemDto);
+            this.results.add(item);
+        }
     }
 
     // region GET-SET
@@ -29,12 +44,12 @@ public class SearchResultDTO {
         this.paging = paging;
     }
 
-    public List<SearchItemDTO> getResults() {
+    public List<SearchItem> getResults() {
         return results;
     }
 
-    public void setResults(List<SearchItemDTO> results) {
-        this.results = (results != null) ? results : new ArrayList<>();
+    public void setResults(List<SearchItem> results) {
+        this.results = results;
     }
 
     public SortType getSort() {
@@ -50,7 +65,7 @@ public class SearchResultDTO {
     }
 
     public void setAvailableSorts(List<SortType> availableSorts) {
-        this.availableSorts = (availableSorts != null) ? availableSorts : new ArrayList<>();
+        this.availableSorts = availableSorts;
     }
 
     public List<Filter> getFilters() {
@@ -58,7 +73,7 @@ public class SearchResultDTO {
     }
 
     public void setFilters(List<Filter> filters) {
-        this.filters = (filters != null) ? filters : new ArrayList<>();
+        this.filters = filters;
     }
 
     public List<Filter> getAvailableFilters() {
@@ -66,9 +81,10 @@ public class SearchResultDTO {
     }
 
     public void setAvailableFilters(List<Filter> availableFilters) {
-        this.availableFilters = (availableFilters != null) ? availableFilters : new ArrayList<>();
+        this.availableFilters = availableFilters;
     }
 
-    //endregion
+
+    // endregion
 
 }// End Class

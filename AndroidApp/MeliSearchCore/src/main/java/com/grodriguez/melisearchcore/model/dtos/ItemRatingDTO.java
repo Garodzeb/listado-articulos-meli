@@ -1,6 +1,6 @@
 package com.grodriguez.melisearchcore.model.dtos;
 
-import com.grodriguez.melisearchcore.model.domain.PagingMetadata;
+import com.grodriguez.melisearchcore.model.domain.search.PagingMetadata;
 
 public class ItemRatingDTO {
 

@@ -1,7 +1,7 @@
 package com.grodriguez.melisearchcore.model.dtos;
 
-import com.grodriguez.melisearchcore.model.domain.ItemPicture;
-import com.grodriguez.melisearchcore.model.domain.Shipping;
+import com.grodriguez.melisearchcore.model.domain.items.ItemPicture;
+import com.grodriguez.melisearchcore.model.domain.items.Shipping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,6 @@ public class ItemDetailDTO {
     private List<ItemPicture> pictures = new ArrayList<>();
     private float availableQty = -1;
     private String warranty = "";
-    private ItemRatingDTO itemRating = new ItemRatingDTO();
 
     public ItemDetailDTO() {
     }
@@ -103,14 +102,6 @@ public class ItemDetailDTO {
 
     public void setWarranty(String warranty) {
         this.warranty = warranty;
-    }
-
-    public ItemRatingDTO getItemRating() {
-        return itemRating;
-    }
-
-    public void setItemRating(ItemRatingDTO itemRating) {
-        this.itemRating = itemRating;
     }
 
     // endregion

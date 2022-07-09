@@ -1,20 +1,20 @@
-package com.grodriguez.melisearchcore.model.dtos;
+package com.grodriguez.melisearchcore.model.domain.items;
 
-import com.grodriguez.melisearchcore.model.domain.items.Shipping;
+import com.grodriguez.melisearchcore.model.domain.site.SiteCurrency;
 
-public class SearchItemDTO {
+import java.util.ArrayList;
+import java.util.List;
 
-    private String id = "";
-    private String title = "";
-    private String currencyId = "";
-    private Shipping shipping = new Shipping();
-    private String categoryId = "";
-    private String condition = "";
-    private double price = 0;
-    private String ThumbnailUrl = "";
+public abstract class BaseItem {
 
-    public SearchItemDTO() {
-    }
+    protected String id = "";
+    protected String title = "";
+    protected String currencyId = "";
+    protected SiteCurrency currency = new SiteCurrency();
+    protected Shipping shipping = new Shipping();
+    protected String categoryId = "";
+    protected String condition = "";
+    protected double price = -1;
 
     // region GET-SET
 
@@ -40,6 +40,14 @@ public class SearchItemDTO {
 
     public void setCurrencyId(String currencyId) {
         this.currencyId = currencyId;
+    }
+
+    public SiteCurrency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(SiteCurrency currency) {
+        this.currency = currency;
     }
 
     public Shipping getShipping() {
@@ -72,14 +80,6 @@ public class SearchItemDTO {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public String getThumbnailUrl() {
-        return ThumbnailUrl;
-    }
-
-    public void setThumbnailUrl(String thumbnailUrl) {
-        ThumbnailUrl = thumbnailUrl;
     }
 
     // endregion

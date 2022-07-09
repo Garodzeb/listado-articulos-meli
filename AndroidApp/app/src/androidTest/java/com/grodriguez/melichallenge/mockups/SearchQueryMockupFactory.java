@@ -1,10 +1,8 @@
 package com.grodriguez.melichallenge.mockups;
 
 import com.grodriguez.melichallenge.TestConstants;
-import com.grodriguez.melisearchcore.model.domain.QueryParameter;
-import com.grodriguez.melisearchcore.model.domain.SearchQuery;
-
-import org.junit.Test;
+import com.grodriguez.melisearchcore.model.domain.search.QueryParameter;
+import com.grodriguez.melisearchcore.model.domain.search.SearchQuery;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -10,21 +10,13 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.grodriguez.melichallenge.framework.datasource_implementations.local.ItemsLocalDataSourceImpl;
 import com.grodriguez.melichallenge.framework.room.AppRoomDatabase;
 import com.grodriguez.melichallenge.mockups.SearchQueryMockupFactory;
-import com.grodriguez.melichallenge.mockups.SiteMetadataMockupFactory;
 import com.grodriguez.melichallenge.validators.SearchQueryValidator;
-import com.grodriguez.melichallenge.validators.SiteMetadataValidator;
-import com.grodriguez.melisearchcore.model.domain.QueryParameter;
-import com.grodriguez.melisearchcore.model.domain.SearchQuery;
+import com.grodriguez.melisearchcore.model.domain.search.SearchQuery;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class ItemsLocalDataSourceTest {

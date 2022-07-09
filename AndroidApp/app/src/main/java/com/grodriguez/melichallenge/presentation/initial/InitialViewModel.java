@@ -3,9 +3,11 @@ package com.grodriguez.melichallenge.presentation.initial;
 import androidx.lifecycle.MutableLiveData;
 
 import com.grodriguez.melichallenge.BuildConfig;
+import com.grodriguez.melichallenge.framework.utils.AppUtils;
 import com.grodriguez.melichallenge.presentation.ui.BaseViewModel;
 import com.grodriguez.melichallenge.presentation.ui.UIState;
 import com.grodriguez.melisearchcore.model.dtos.SiteMetadataDTO;
+import com.grodriguez.melisearchcore.repositories.ItemsRepository;
 import com.grodriguez.melisearchcore.repositories.SiteRepository;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -20,8 +22,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class InitialViewModel extends BaseViewModel {
 
     SiteRepository siteRepository;
+    ItemsRepository itemsRepository;
 
     // region LiveData
+
     MutableLiveData<Boolean> savedMetadata;
 
     // region GET-SET
@@ -38,9 +42,10 @@ public class InitialViewModel extends BaseViewModel {
 
     // endregion
 
-    public InitialViewModel(SiteRepository siteRepository) {
+    public InitialViewModel(SiteRepository siteRepository, ItemsRepository itemsRepository) {
         super();
         this.siteRepository = siteRepository;
+        this.itemsRepository = itemsRepository;
     }
 
     public void getSiteMetadata() {
@@ -71,7 +76,8 @@ public class InitialViewModel extends BaseViewModel {
                 .subscribeWith(new DisposableCompletableObserver() {
                     @Override
                     public void onComplete() {
-                        getSavedMetadata().postValue(true);
+                        //Si pudo guardar la metadata, limpia el registro de búsqueda anterior
+                        clearSearchQuery();
                     }
 
                     @Override
@@ -81,6 +87,26 @@ public class InitialViewModel extends BaseViewModel {
                 });
 
         addDisposableObserver(observable);
+    }
+
+    public void clearSearchQuery() {
+        Disposable observer = itemsRepository.clearItemsSearchQuery()
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(new DisposableCompletableObserver() {
+                    @Override
+                    public void onComplete() {
+                        // Si pudo eliminar los datos de búsqueda avisa a la interfaz que puede
+                        // cargar el formulario
+                        getSavedMetadata().postValue(true);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        AppUtils.logError(e);
+                    }
+                });
+
+        addDisposableObserver(observer);
     }
 
 }// End Class

@@ -11,8 +11,8 @@ import com.grodriguez.melichallenge.framework.room.entities.search.QueryParamete
 import com.grodriguez.melichallenge.framework.room.entities.search.SearchQueriesRoomEntity;
 import com.grodriguez.melichallenge.framework.utils.AppConstants;
 import com.grodriguez.melisearchcore.datasource_abstractions.items.IItemsLocalDataSource;
-import com.grodriguez.melisearchcore.model.domain.QueryParameter;
-import com.grodriguez.melisearchcore.model.domain.SearchQuery;
+import com.grodriguez.melisearchcore.model.domain.search.QueryParameter;
+import com.grodriguez.melisearchcore.model.domain.search.SearchQuery;
 
 import java.util.ArrayList;
 import java.util.List;

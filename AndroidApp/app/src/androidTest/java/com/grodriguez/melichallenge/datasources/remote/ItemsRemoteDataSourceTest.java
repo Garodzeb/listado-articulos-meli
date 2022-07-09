@@ -4,20 +4,17 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.grodriguez.melichallenge.TestConstants;
 import com.grodriguez.melichallenge.framework.datasource_implementations.remote.ItemsRemoteDataSourceImpl;
-import com.grodriguez.melichallenge.framework.network.retrofit.APIException;
 import com.grodriguez.melichallenge.mockups.SearchQueryMockupFactory;
 import com.grodriguez.melichallenge.validators.APIExceptionValidator;
 import com.grodriguez.melichallenge.validators.ItemDetailValidator;
 import com.grodriguez.melichallenge.validators.ItemRatingsValidator;
 import com.grodriguez.melichallenge.validators.SearchQueryValidator;
 import com.grodriguez.melisearchcore.datasource_abstractions.items.IItemsRemoteDataSource;
-import com.grodriguez.melisearchcore.model.domain.PagingMetadata;
-import com.grodriguez.melisearchcore.model.domain.SearchQuery;
+import com.grodriguez.melisearchcore.model.domain.search.SearchQuery;
 import com.grodriguez.melisearchcore.model.dtos.ItemDetailDTO;
 import com.grodriguez.melisearchcore.model.dtos.ItemRatingDTO;
 import com.grodriguez.melisearchcore.model.dtos.SearchResultDTO;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
