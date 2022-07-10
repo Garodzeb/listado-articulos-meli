@@ -22,6 +22,14 @@ public class AppUtils {
         return sharedPref.getString(key, "");
     }
 
+    // Elimina un dato de SharedPreferences
+    public static void removeCustomPreference(Context context, String key) {
+        SharedPreferences sharedPref = context.getSharedPreferences(AppConstants.SHARED_PREFERENCE_FILE_ID, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove(key);
+        editor.apply();
+    }
+
     // Genera un log en consola con el mensaje del error generado
     public static void logError(Throwable e) {
         Log.e(AppConstants.APP_LOG_TAG, "Error message: " + e.getMessage());

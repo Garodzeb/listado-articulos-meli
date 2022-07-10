@@ -2,9 +2,6 @@ package com.grodriguez.melisearchcore.model.domain.items;
 
 import com.grodriguez.melisearchcore.model.domain.site.SiteCurrency;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class BaseItem {
 
     protected String id = "";
@@ -15,6 +12,7 @@ public abstract class BaseItem {
     protected String categoryId = "";
     protected String condition = "";
     protected double price = -1;
+    protected boolean bestSeller = false;
 
     // region GET-SET
 
@@ -80,6 +78,14 @@ public abstract class BaseItem {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public boolean isBestSeller() {
+        return bestSeller;
+    }
+
+    public void setBestSeller(boolean bestSeller) {
+        this.bestSeller = bestSeller;
     }
 
     // endregion

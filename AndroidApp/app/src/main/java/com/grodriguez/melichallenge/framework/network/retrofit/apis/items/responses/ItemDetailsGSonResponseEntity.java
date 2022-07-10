@@ -25,6 +25,9 @@ public class ItemDetailsGSonResponseEntity {
     @SerializedName("available_quantity")
     private float availableQty;
 
+    @SerializedName("sold_quantity")
+    private float soldQty;
+
     @SerializedName("condition")
     private String condition;
 
@@ -88,6 +91,14 @@ public class ItemDetailsGSonResponseEntity {
 
     public void setAvailableQty(float availableQty) {
         this.availableQty = availableQty;
+    }
+
+    public float getSoldQty() {
+        return soldQty;
+    }
+
+    public void setSoldQty(float soldQty) {
+        this.soldQty = soldQty;
     }
 
     public String getCondition() {

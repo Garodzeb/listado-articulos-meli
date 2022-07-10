@@ -15,6 +15,7 @@ import com.grodriguez.melichallenge.framework.network.retrofit.apis.search.respo
 import com.grodriguez.melichallenge.framework.network.retrofit.apis.search.responses.SearchResultGSonResponseEntity;
 import com.grodriguez.melichallenge.framework.network.retrofit.apis.search.responses.SortTypeGSonResponseEntity;
 import com.grodriguez.melichallenge.framework.network.retrofit.clients.MeliApiRetrofitClient;
+import com.grodriguez.melichallenge.framework.utils.AppConstants;
 import com.grodriguez.melisearchcore.datasource_abstractions.items.IItemsRemoteDataSource;
 import com.grodriguez.melisearchcore.model.domain.site.SiteCategory;
 import com.grodriguez.melisearchcore.model.domain.search.Filter;
@@ -106,6 +107,25 @@ public class ItemsRemoteDataSourceImpl implements IItemsRemoteDataSource {
                                 itemShipping.setFreeShipping(respItem.getShipping().isFreeShipping());
                                 item.setShipping(itemShipping);
 
+                                // Evalua los tags asociados al artículo
+                                if (respItem.getTags() != null && respItem.getTags().size() > 0) {
+                                    int i = 0;
+                                    int tagsQty = respItem.getTags().size();
+                                    boolean allTagsFound = false;
+
+                                    while (i < tagsQty && !allTagsFound) {
+                                        String tag = respItem.getTags().get(i);
+
+                                        // Valida si el artículo esta marcado como uno de los más vendidos
+                                        if (tag.equalsIgnoreCase(AppConstants.BEST_SELLER_TAG)) {
+                                            item.setBestSeller(true);
+                                            allTagsFound = true;
+                                        }
+
+                                        i++;
+                                    }
+                                }
+
                                 searchResults.add(item);
                             }
                             result.setResults(searchResults);
@@ -125,6 +145,7 @@ public class ItemsRemoteDataSourceImpl implements IItemsRemoteDataSource {
                                     fValue.setId(respValue.getId());
                                     fValue.setName(respValue.getName());
                                     fValue.setResults(respValue.getResults());
+                                    fValue.setSelected(true);
 
                                     if (respValue.getPathFromRoot() != null && respValue.getPathFromRoot().size() > 0) {
                                         for (CategoryGSonResponseEntity respCat : respValue.getPathFromRoot()) {
@@ -156,6 +177,7 @@ public class ItemsRemoteDataSourceImpl implements IItemsRemoteDataSource {
                                     fValue.setId(respValue.getId());
                                     fValue.setName(respValue.getName());
                                     fValue.setResults(respValue.getResults());
+                                    fValue.setSelected(false);
 
                                     // Mapea la ruta a la categoría raíz de la categoría asociada al artículo
                                     if (respValue.getPathFromRoot() != null && respValue.getPathFromRoot().size() > 0) {
@@ -212,6 +234,7 @@ public class ItemsRemoteDataSourceImpl implements IItemsRemoteDataSource {
                     result.setPrice(body.getPrice());
                     result.setCondition(body.getCondition());
                     result.setAvailableQty(body.getAvailableQty());
+                    result.setSoldQty(body.getSoldQty());
 
                     // Mapea los datos de envío asociados al artículo
                     Shipping shipping = new Shipping();

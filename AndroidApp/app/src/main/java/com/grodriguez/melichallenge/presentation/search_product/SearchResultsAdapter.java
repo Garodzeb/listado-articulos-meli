@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.grodriguez.melichallenge.R;
 import com.grodriguez.melichallenge.databinding.FragmentSearchResultsItemBinding;
+import com.grodriguez.melichallenge.framework.utils.AppConstants;
+import com.grodriguez.melichallenge.framework.utils.AppUtils;
+import com.grodriguez.melisearchcore.model.domain.items.ItemDetail;
 import com.grodriguez.melisearchcore.model.domain.search.SearchItem;
 import com.squareup.picasso.Picasso;
 
@@ -20,7 +23,16 @@ import java.util.List;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.SearchResultItemViewHolder> {
 
+    public interface IItemSelectedListener {
+        void onItemSelected(SearchItem item);
+    }
+
     List<SearchItem> resultItems = new ArrayList<>();
+    IItemSelectedListener listener;
+
+    public SearchResultsAdapter(IItemSelectedListener listener) {
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -28,7 +40,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         FragmentSearchResultsItemBinding itemBinding = FragmentSearchResultsItemBinding.inflate(inflater, parent, false);
 
-        return new SearchResultItemViewHolder(itemBinding.getRoot(), parent.getContext(), itemBinding);
+        return new SearchResultItemViewHolder(itemBinding.getRoot(), parent.getContext(), itemBinding, listener);
     }
 
     @Override
@@ -48,20 +60,23 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     }
 
     static class SearchResultItemViewHolder extends RecyclerView.ViewHolder {
-
+        SearchItem item;
         Context context;
+        IItemSelectedListener listener;
         FragmentSearchResultsItemBinding binding;
 
         public SearchResultItemViewHolder(@NonNull View itemView,
                                           Context context,
-                                          FragmentSearchResultsItemBinding binding) {
+                                          FragmentSearchResultsItemBinding binding,
+                                          IItemSelectedListener listener) {
             super(itemView);
             this.context = context;
             this.binding = binding;
+            this.listener = listener;
         }
 
         public void bind(SearchItem item) {
-
+            this.item = item;
             binding.txtFragSearchResultsItemTitle.setText(item.getTitle());
 
             NumberFormat formatter = NumberFormat.getNumberInstance();
@@ -75,6 +90,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
             if (item.getShipping().isFreeShipping())
                 binding.txtFragSearchResultsItemFreeShipping.setVisibility(View.VISIBLE);
+
+            if (item.isBestSeller())
+                binding.txtFragSearchResultsItemBestSeller.setVisibility(View.VISIBLE);
 
             binding.imgFragSearchResultsItemFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -91,6 +109,10 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                         item.setFavorite(false);
                     }
                 }
+            });
+
+            binding.cvFragSearchResultsItem.setOnClickListener(view -> {
+                listener.onItemSelected(this.item);
             });
         }
 

@@ -5,6 +5,7 @@
     <string name="img_launcher_icon_content_desc">Icono de la applicación</string>
 
     <!-- Main Activity -->
+    <string name="generic_error_message">A ocurrido un error inesperado</string>
     <string name="txt_search_item_hint">Buscar en Mercado Libre</string>
     <string name="lbl_no_items_found">No hay resultados para mostrar</string>
 
@@ -15,6 +16,11 @@
     <string name="lbl_free_shipping_text">Envío gratis</string>
 
     <!-- Product Detail Activity -->
+    <string name="activity_detail_title">Producto</string>
+    <string name="no_stock_message">Sin stock</string>
+    <string name="lbl_activity_product_detail_available_stock">Stock Disponible</string>
+    <string name="btn_activity_product_detail_buy_now_text">Comprar ahora</string>
+    <string name="btn_activity_product_detail_add_to_cart_text">Agregar al carrito</string>
 
     <!-- Filters -->
     <string name="lbl_filter_categories_choose_category">Eligir categoría</string>
@@ -22,6 +28,9 @@
     <string name="lbl_filter_range_minimum">Mínimo</string>
     <string name="lbl_filter_range_maximum">Máximo</string>
     <string name="lbl_clean_filters">Limpiar Filtros</string>
+    <string name="img_expand_filter_content_desc">Mostrar filtros</string>
+    <string name="img_collapse_filter_content_desc">Ocultar filtros</string>
     <string name="lbl_filter_dialog_header_text">Filtrar por:</string>
+    <string name="btn_apply_filters_text">Applicar filtros</string>
 
 </resources>

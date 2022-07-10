@@ -3,6 +3,8 @@ package com.grodriguez.melichallenge.framework.network.retrofit.apis.search.resp
 import com.google.gson.annotations.SerializedName;
 import com.grodriguez.melichallenge.framework.network.retrofit.apis.common.responses.ShippingGSonResponseEntity;
 
+import java.util.List;
+
 public class SearchItemGSonResponseEntity {
 
     @SerializedName("id")
@@ -28,6 +30,9 @@ public class SearchItemGSonResponseEntity {
 
     @SerializedName("thumbnail")
     private String thumbnailUrl;
+
+    @SerializedName("tags")
+    private List<String> tags;
 
     public SearchItemGSonResponseEntity() {
     }
@@ -96,6 +101,14 @@ public class SearchItemGSonResponseEntity {
 
     public void setThumbnailUrl(String thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     // endregion

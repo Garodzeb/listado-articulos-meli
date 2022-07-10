@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.room.rxjava3.EmptyResultSetException;
 
 import com.grodriguez.melichallenge.BuildConfig;
+import com.grodriguez.melichallenge.framework.utils.AppConstants;
 import com.grodriguez.melichallenge.framework.utils.AppUtils;
 import com.grodriguez.melichallenge.framework.utils.UIStatus;
 import com.grodriguez.melichallenge.presentation.ui.BaseViewModel;
@@ -14,9 +15,11 @@ import com.grodriguez.melisearchcore.model.domain.search.QueryParameter;
 import com.grodriguez.melisearchcore.model.domain.search.SearchItem;
 import com.grodriguez.melisearchcore.model.domain.search.SearchQuery;
 import com.grodriguez.melisearchcore.model.domain.search.SearchResult;
+import com.grodriguez.melisearchcore.model.domain.search.SortType;
 import com.grodriguez.melisearchcore.model.domain.site.SiteCurrency;
 import com.grodriguez.melisearchcore.model.dtos.SearchResultDTO;
 import com.grodriguez.melisearchcore.model.dtos.SiteMetadataDTO;
+import com.grodriguez.melisearchcore.model.enums.FilterType;
 import com.grodriguez.melisearchcore.repositories.ItemsRepository;
 import com.grodriguez.melisearchcore.repositories.SiteRepository;
 
@@ -40,7 +43,9 @@ public class MainViewModel extends BaseViewModel {
 
     private MutableLiveData<SearchQuery> currentSearchQuery;
     private MutableLiveData<SearchResult> searchResult;
+    private MutableLiveData<List<Filter>> availableFilters;
     private MutableLiveData<List<QueryParameter>> searchParameters;
+    private MutableLiveData<Boolean> filtersApplied;
 
     // region GET-SET
 
@@ -60,12 +65,31 @@ public class MainViewModel extends BaseViewModel {
         return searchResult;
     }
 
+    public MutableLiveData<List<Filter>> getAvailableFilters() {
+
+        if (availableFilters == null)
+            availableFilters = new MutableLiveData<>();
+
+        return availableFilters;
+    }
+
     public MutableLiveData<List<QueryParameter>> getSearchParameters() {
 
         if (searchParameters == null)
             searchParameters = new MutableLiveData<>(new ArrayList<>());
 
         return searchParameters;
+    }
+
+    public MutableLiveData<Boolean> getFiltersApplied() {
+        if (filtersApplied == null)
+            filtersApplied = new MutableLiveData<>(false);
+
+        return filtersApplied;
+    }
+
+    public void setFiltersApplied(Boolean appliedFilters) {
+        getFiltersApplied().setValue(appliedFilters);
     }
 
     // endregion
@@ -107,7 +131,10 @@ public class MainViewModel extends BaseViewModel {
                 .subscribeWith(new DisposableSingleObserver<SearchResultDTO>() {
                     @Override
                     public void onSuccess(@NonNull SearchResultDTO resultDTO) {
-                        loadItemsCurrencyInfo(new SearchResult(resultDTO));
+                        SearchResult result = new SearchResult(resultDTO);
+
+                        loadCurrentFilters(result);
+                        loadItemsCurrencyInfo(result);
                     }
 
                     @Override
@@ -133,7 +160,10 @@ public class MainViewModel extends BaseViewModel {
                     .subscribeWith(new DisposableSingleObserver<SearchResultDTO>() {
                         @Override
                         public void onSuccess(@NonNull SearchResultDTO resultDTO) {
-                            loadItemsCurrencyInfo(new SearchResult(resultDTO));
+                            SearchResult result = new SearchResult(resultDTO);
+
+                            loadCurrentFilters(result);
+                            loadItemsCurrencyInfo(result);
                         }
 
                         @Override
@@ -207,7 +237,7 @@ public class MainViewModel extends BaseViewModel {
 
                         // Dependiendo del tipo de filtro reemplaza o agrega al listado de valores el filtro
                         // a aplicar
-                        if (appliedFilter.getType() == Filter.FilterType.STRING) {
+                        if (appliedFilter.getType() == FilterType.STRING) {
                             //TODO: validar si este es el único caso al que aplica
 
                             // Si el filtro es de tipo STRING se agrega el valor seleccionado en vez
@@ -260,6 +290,63 @@ public class MainViewModel extends BaseViewModel {
     // Limpia los filtros aplicados por el usuario
     public void clearFilters() {
         getSearchParameters().setValue(new ArrayList<>());
+
+        // Realiza una búsqueda sin parámetros para volver a tener los filtros por defecto devueltos
+        // por la API
+        if (currentSearchQuery.getValue() != null)
+            searchItem(currentSearchQuery.getValue().getQuery());
+    }
+
+    public void loadAvailableFilters() {
+        SearchResult searchResult = getSearchResult().getValue();
+
+        if (searchResult != null && searchResult.getAvailableFilters().size() > 0) {
+            // Combina en una sola lista los filtros aplicados por el usuario y los filtros disponibles
+            List<Filter> availableFilters = new ArrayList<>();
+
+            // El ordenamiento aplicado se lo trata como un filtro adicional
+            Filter sortFilter = new Filter();
+            sortFilter.setId(AppConstants.SORT_FILTER_ID);
+            sortFilter.setName(AppConstants.SORT_FILTER_NAME);
+            sortFilter.setType(FilterType.STRING);
+
+            SortType sort = searchResult.getSort();
+
+            FilterValue selectedSort = new FilterValue();
+            selectedSort.setId(sort.getId());
+            selectedSort.setName(sort.getName());
+            selectedSort.setSelected(true);
+
+            sortFilter.getValues().add(selectedSort);
+
+            // Agrega los sorts posibles a la lista de filtros
+            for (SortType sortValue : searchResult.getAvailableSorts()) {
+                FilterValue value = new FilterValue();
+                value.setId(sortValue.getId());
+                value.setName(sortValue.getName());
+
+                sortFilter.getValues().add(value);
+            }
+            availableFilters.add(sortFilter);
+
+            // Busca los filtros que no se deben mostrar en la interfaz
+            String hiddenFilters = BuildConfig.HIDDEN_FILTERS;
+
+            // Agrega los filtros aplicados a la consulta
+            for (Filter filter : searchResult.getFilters()) {
+                // Verifica que no sea uno de los filtros que no estan permitidos
+                if (!hiddenFilters.toLowerCase().contains(filter.getId().toLowerCase()))
+                    availableFilters.add(filter);
+            }
+
+            for (Filter filter : searchResult.getAvailableFilters()) {
+                // Verifica que no sea uno de los filtros que no estan permitidos
+                if (!hiddenFilters.toLowerCase().contains(filter.getId().toLowerCase()))
+                    availableFilters.add(filter);
+            }
+
+            getAvailableFilters().setValue(availableFilters);
+        }
     }
 
     @Override
@@ -284,6 +371,23 @@ public class MainViewModel extends BaseViewModel {
     // endregion
 
     // region Private Methods
+
+    // Guarda los filtros aplicados retornados por la consulta a la API
+    private void loadCurrentFilters(SearchResult resultDTO) {
+        // Valida si el resultado tiene algún filtro aplicado
+        if (resultDTO.getFilters().size() > 0) {
+            getSearchParameters().setValue(new ArrayList<>());
+
+            // Actualiza los filtros aplicados en la consulta con los filtros
+            // retornados por la API
+            for (Filter appliedFilter : resultDTO.getFilters()) {
+                for (FilterValue filterValue : appliedFilter.getValues()) {
+                    filterValue.setSelected(true);
+                    addFilterToQuery(appliedFilter, filterValue);
+                }
+            }
+        }
+    }
 
     // Dado un resultado de búsqueda, agrega la información sobre la moneda tomando los datos
     // guardados en memoria cuando se inicializó la aplicación

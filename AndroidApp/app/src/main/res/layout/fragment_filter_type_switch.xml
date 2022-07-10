@@ -4,16 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/md_theme_light_background"
     android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    tools:context=".presentation.ui.filters.types.BooleanFilterFragment">
+    android:paddingBottom="10dp">
 
-    <Switch
-        android:id="@+id/sw_fragment_filter_type_switch_value"
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sw_frag_filter_type_switch_value"
+        style="@style/filtersSwitch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:checked="false"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,5 +30,5 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sw_fragment_filter_type_switch_value" />
+        app:layout_constraintTop_toBottomOf="@+id/sw_frag_filter_type_switch_value" />
 </androidx.constraintlayout.widget.ConstraintLayout>

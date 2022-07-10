@@ -2,25 +2,26 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout_frag_search_filters"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minWidth="400dp"
-    tools:context=".presentation.search_product.filters.SearchFiltersDialogFragment">
+    android:layout_height="match_parent"
+    android:background="@color/md_theme_light_background"
+    tools:context=".presentation.search_product.filters.SearchFilterFragment">
 
     <TextView
-        android:id="@+id/lbl_dialog_fragment_search_filters_header"
+        android:id="@+id/lbl_frag_search_filters_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/lbl_filter_dialog_header_text"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_dialog_fragment_search_filters_clean_filters"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_frag_search_filters_clean_filters"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btn_dialog_fragment_search_filters_clean_filters" />
+        app:layout_constraintTop_toTopOf="@+id/btn_frag_search_filters_clean_filters" />
 
     <Button
-        android:id="@+id/btn_dialog_fragment_search_filters_clean_filters"
+        android:id="@+id/btn_frag_search_filters_clean_filters"
         style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,10 +37,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_dialog_fragment_search_filters"
+        android:id="@+id/rv_frag_search_filters"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/btn_frag_search_filters_apply_filters"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider4" />
@@ -52,5 +56,20 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_dialog_fragment_search_filters_clean_filters" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_frag_search_filters_clean_filters" />
+
+    <Button
+        android:id="@+id/btn_frag_search_filters_apply_filters"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/button_primary_color"
+        android:text="@string/btn_apply_filters_text"
+        android:textColor="@color/md_theme_light_onSecondary"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:cornerRadius="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

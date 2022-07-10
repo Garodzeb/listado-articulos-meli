@@ -11,7 +11,8 @@ public class SearchItemDTO {
     private String categoryId = "";
     private String condition = "";
     private double price = 0;
-    private String ThumbnailUrl = "";
+    private String thumbnailUrl = "";
+    private boolean bestSeller = false;
 
     public SearchItemDTO() {
     }
@@ -75,11 +76,19 @@ public class SearchItemDTO {
     }
 
     public String getThumbnailUrl() {
-        return ThumbnailUrl;
+        return thumbnailUrl;
     }
 
     public void setThumbnailUrl(String thumbnailUrl) {
-        ThumbnailUrl = thumbnailUrl;
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public boolean isBestSeller() {
+        return bestSeller;
+    }
+
+    public void setBestSeller(boolean bestSeller) {
+        this.bestSeller = bestSeller;
     }
 
     // endregion

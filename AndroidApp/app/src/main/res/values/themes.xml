@@ -1,5 +1,5 @@
-
 <resources>
+
     <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:windowLightStatusBar">true</item>
         <item name="colorPrimary">@color/md_theme_light_primary</item>
@@ -37,6 +37,11 @@
 
     <style name="filtersCheckbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="buttonTint">@color/text_button_color</item>
+    </style>
+
+    <style name="filtersSwitch" parent="@style/Widget.Material3.CompoundButton.Switch">
+        <item name="thumbTint">@color/color_filter_switch_thumb</item>
+        <item name="trackTint">@color/color_filter_switch_track</item>
     </style>
 
 </resources>

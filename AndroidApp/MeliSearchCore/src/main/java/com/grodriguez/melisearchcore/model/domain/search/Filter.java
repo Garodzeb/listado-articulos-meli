@@ -1,19 +1,12 @@
 package com.grodriguez.melisearchcore.model.domain.search;
 
+import com.grodriguez.melisearchcore.model.enums.FilterType;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class Filter {
-
-    public enum FilterType {
-        TEXT,
-        NUMBER,
-        RANGE,
-        BOOLEAN,
-        STRING,
-        NONE
-    }
 
     private String id = "";
     private String name = "";
@@ -43,6 +36,10 @@ public class Filter {
 
     public FilterType getType() {
         return type;
+    }
+
+    public void setType(FilterType type) {
+        this.type = type;
     }
 
     public void setType(String type) {

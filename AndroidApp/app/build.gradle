@@ -3,20 +3,21 @@ plugins {
 }
 
 // Variables de entorno de configuración de la App
-def meliAPIUrl = (System.getenv("MELI_API_URL") != null) ? "\"${System.getenv("MELI_API_URL")}\"" : "\"\""
-def meliAPISite = (System.getenv("MELI_API_SITE") != null) ? "\"${System.getenv("MELI_API_SITE")}\"" : "\"\""
+def meliAPIUrl = (System.getenv("MELI_API_URL") != null) ? "\"${System.getenv("MELI_API_URL")}\"" : "\"https://api.mercadolibre.com/\""
+def meliAPISite = (System.getenv("MELI_API_SITE") != null) ? "\"${System.getenv("MELI_API_SITE")}\"" : "\"MLU\""
+def hiddenFIlters = (System.getenv("MELI_HIDDEN_FILTERS") != null) ? "\"${System.getenv("MELI_HIDDEN_FILTERS")}\"" : "\"accepts_mercadopago|Installments|Shipping|has_video|has_pictures|price_campaign_id|shipping_cost|\""
 
 // Variables de configuración del entorno de prueba
-def testValidAPISite = (System.getenv("TEST_VALID_API_SITE") != null) ? "\"${System.getenv("TEST_VALID_API_SITE")}\"" : "\"\""
-def testInvalidAPISite = (System.getenv("TEST_INVALID_API_SITE") != null) ? "\"${System.getenv("TEST_INVALID_API_SITE")}\"" : "\"\""
-def testValidItemId = (System.getenv("TEST_VALID_ITEM_ID") != null) ? "\"${System.getenv("TEST_VALID_ITEM_ID")}\"" : "\"\""
-def testInvalidItemId = (System.getenv("TEST_INVALID_ITEM_ID") != null) ? "\"${System.getenv("TEST_INVALID_ITEM_ID")}\"" : "\"\""
-def testValidSearchQuery = (System.getenv("TEST_VALID_SEARCH_QUERY") != null) ? "\"${System.getenv("TEST_VALID_SEARCH_QUERY")}\"" : "\"\""
-def testInvalidSearchQuery = (System.getenv("TEST_INVALID_SEARCH_QUERY") != null) ? "\"${System.getenv("TEST_INVALID_SEARCH_QUERY")}\"" : "\"\""
-def testValidFilterName1 = (System.getenv("TEST_VALID_FILTER_NAME_1") != null) ? "\"${System.getenv("TEST_VALID_FILTER_NAME_1")}\"" : "\"\""
-def testValidFilterValue1 = (System.getenv("TEST_VALID_FILTER_VALUE_1") != null) ? "\"${System.getenv("TEST_VALID_FILTER_VALUE_1")}\"" : "\"\""
-def testValidFilterName2 = (System.getenv("TEST_VALID_FILTER_NAME_2") != null) ? "\"${System.getenv("TEST_VALID_FILTER_NAME_2")}\"" : "\"\""
-def testValidFilterValue2 = (System.getenv("TEST_VALID_FILTER_VALUE_2") != null) ? "\"${System.getenv("TEST_VALID_FILTER_VALUE_2")}\"" : "\"\""
+def testValidAPISite = (System.getenv("TEST_VALID_API_SITE") != null) ? "\"${System.getenv("TEST_VALID_API_SITE")}\"" : "\"MLU\""
+def testInvalidAPISite = (System.getenv("TEST_INVALID_API_SITE") != null) ? "\"${System.getenv("TEST_INVALID_API_SITE")}\"" : "\"La-Li-Lu-Le-Lo\""
+def testValidItemId = (System.getenv("TEST_VALID_ITEM_ID") != null) ? "\"${System.getenv("TEST_VALID_ITEM_ID")}\"" : "\"MLU600098464\""
+def testInvalidItemId = (System.getenv("TEST_INVALID_ITEM_ID") != null) ? "\"${System.getenv("TEST_INVALID_ITEM_ID")}\"" : "\"La-Li-Lu-Le-Lo\""
+def testValidSearchQuery = (System.getenv("TEST_VALID_SEARCH_QUERY") != null) ? "\"${System.getenv("TEST_VALID_SEARCH_QUERY")}\"" : "\"oculus quest\""
+def testInvalidSearchQuery = (System.getenv("TEST_INVALID_SEARCH_QUERY") != null) ? "\"${System.getenv("TEST_INVALID_SEARCH_QUERY")}\"" : "\"La-Li-Lu-Le-Lo\""
+def testValidFilterName1 = (System.getenv("TEST_VALID_FILTER_NAME_1") != null) ? "\"${System.getenv("TEST_VALID_FILTER_NAME_1")}\"" : "\"sort\""
+def testValidFilterValue1 = (System.getenv("TEST_VALID_FILTER_VALUE_1") != null) ? "\"${System.getenv("TEST_VALID_FILTER_VALUE_1")}\"" : "\"price_desc\""
+def testValidFilterName2 = (System.getenv("TEST_VALID_FILTER_NAME_2") != null) ? "\"${System.getenv("TEST_VALID_FILTER_NAME_2")}\"" : "\"power_seller\""
+def testValidFilterValue2 = (System.getenv("TEST_VALID_FILTER_VALUE_2") != null) ? "\"${System.getenv("TEST_VALID_FILTER_VALUE_2")}\"" : "\"yes\""
 
 android {
     compileSdk 32
@@ -35,6 +36,7 @@ android {
 
         buildConfigField "String", "MELI_API_URL", meliAPIUrl
         buildConfigField "String", "MELI_API_SITE", meliAPISite
+        buildConfigField "String", "HIDDEN_FILTERS", hiddenFIlters
 
         buildConfigField "String", "TEST_VALID_API_SITE", testValidAPISite
         buildConfigField "String", "TEST_INVALID_API_SITE", testInvalidAPISite

@@ -10,6 +10,8 @@ Para poder compilar la solución se deben setear las siguientes variables de ent
 
 - **MELI_API_SITE**: Código válido del sitio a utilizar por defecto en la APP
 
+- **MELI_HIDDEN_FILTERS**: Códigos de los filtros que no deben mostrarse al usuario (formato: param1|param2|...paramN|)
+
 ### Variables del entorno de pruebas
 
 - **TEST_VALID_API_SITE**: Código de sitio válido a utilizar en las pruebas unitarias

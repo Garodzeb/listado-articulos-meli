@@ -2,6 +2,8 @@
 MELI_API_URL=https://api.mercadolibre.com/
 # Código válido del sitio a utilizar por defecto en la APP
 MELI_API_SITE=MLU
+# Códigos de los filtros que no deben ser visualizados en la aplicación
+MELI_HIDDEN_FILTERS="accepts_mercadopago|Installments|Shipping|has_video|has_pictures|price_campaign_id|shipping_cost|"
 
 # Valores variables de entorno para definir el entorno de pruebas
 # Código de sitio válido a utilizar en las pruebas unitarias
@@ -37,6 +39,13 @@ if grep 'export MELI_API_SITE=.*' ~/.zprofile; then
     sed -i -e "s|export MELI_API_SITE=.*|export MELI_API_SITE=$MELI_API_SITE|" ~/.zprofile 
 else
     echo "export MELI_API_SITE=$MELI_API_SITE" >> ~/.zprofile;
+fi
+
+# Busca si la variable MELI_HIDDEN_FILTERS ya se haya definido en el entorno, sino la inserta
+if grep 'export MELI_HIDDEN_FILTERS=.*' ~/.zprofile; then
+    sed -i -e "s|export MELI_HIDDEN_FILTERS=.*|export MELI_HIDDEN_FILTERS=$MELI_HIDDEN_FILTERS|" ~/.zprofile 
+else
+    echo "export MELI_HIDDEN_FILTERS=$MELI_HIDDEN_FILTERS" >> ~/.zprofile;
 fi
 
 # Busca si la variable TEST_VALID_API_SITE ya se haya definido en el entorno, sino la inserta

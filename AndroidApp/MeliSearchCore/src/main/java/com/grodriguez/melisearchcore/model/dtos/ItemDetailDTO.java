@@ -17,6 +17,7 @@ public class ItemDetailDTO {
     private double price = -1;
     private List<ItemPicture> pictures = new ArrayList<>();
     private float availableQty = -1;
+    private float soldQty = 0;
     private String warranty = "";
 
     public ItemDetailDTO() {
@@ -94,6 +95,14 @@ public class ItemDetailDTO {
 
     public void setAvailableQty(float availableQty) {
         this.availableQty = availableQty;
+    }
+
+    public float getSoldQty() {
+        return soldQty;
+    }
+
+    public void setSoldQty(float soldQty) {
+        this.soldQty = soldQty;
     }
 
     public String getWarranty() {

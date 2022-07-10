@@ -12,6 +12,8 @@ import android.os.Handler;
 import com.grodriguez.melichallenge.R;
 import com.grodriguez.melichallenge.application.AppDependenciesContainer;
 import com.grodriguez.melichallenge.framework.room.AppRoomDatabase;
+import com.grodriguez.melichallenge.framework.utils.AppConstants;
+import com.grodriguez.melichallenge.framework.utils.AppUtils;
 import com.grodriguez.melichallenge.framework.utils.UIStatus;
 import com.grodriguez.melichallenge.presentation.ViewModelsFactory;
 import com.grodriguez.melichallenge.presentation.search_product.MainActivity;
@@ -19,47 +21,66 @@ import com.grodriguez.melichallenge.presentation.ui.UIState;
 
 public class InitialActivity extends AppCompatActivity {
 
-    public static final int MIN_WAIT_UI = 1000;
-
     InitialViewModel initialViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_initial);
+        try {
+            setContentView(R.layout.activity_initial);
 
-        Context context = getApplicationContext();
-        AppDependenciesContainer appDependencies = AppDependenciesContainer.getInstance(context, AppRoomDatabase.getInstance(context));
+            Context context = getApplicationContext();
+            AppDependenciesContainer appDependencies = AppDependenciesContainer.getInstance(context, AppRoomDatabase.getInstance(context));
 
-        ViewModelsFactory factory = new ViewModelsFactory(appDependencies.getItemsRepository(), appDependencies.getSiteRepository());
+            ViewModelsFactory factory = new ViewModelsFactory(appDependencies.getItemsRepository(), appDependencies.getSiteRepository());
 
-        initialViewModel = new ViewModelProvider(this, factory).get(InitialViewModel.class);
-        initializeObservers();
+            initialViewModel = new ViewModelProvider(this, factory).get(InitialViewModel.class);
+            initializeObservers();
 
-        initialViewModel.getSiteMetadata();
+            initialViewModel.getSiteMetadata();
+        }
+        catch (Exception ex) {
+            // Finaliza la aplicación si ocurre algún error en la inicialización
+            AppUtils.logError(ex);
+            finish();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        initialViewModel.dispose();
+
+        try {
+            initialViewModel.dispose();
+        }
+        catch (Exception ex)
+        {
+            // Finaliza la aplicación si ocurre algún error inesperado
+            AppUtils.logError(ex);
+            finish();
+        }
     }
 
     private void initializeObservers() {
         initialViewModel.getUIState().observe(this, state -> {
             // Si dio un error en la inicialización finaliza el Activity y no deja continuar
-            if(state.getCurrentStatus() == UIStatus.UI_ON_ERROR)
+            if (state.getCurrentStatus() == UIStatus.UI_ON_ERROR)
                 finish();
         });
 
         initialViewModel.getSavedMetadata().observe(this, savedMetadata -> {
-            if (savedMetadata) {
-                new Handler().postDelayed(() -> {
+            try {
+                if (savedMetadata) {
                     Intent intent = new Intent(InitialActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
-                }, MIN_WAIT_UI);
+                }
+            }
+            catch (Exception ex) {
+                // Finaliza la aplicación si ocurre algún error inesperado
+                AppUtils.logError(ex);
+                finish();
             }
         });
     }

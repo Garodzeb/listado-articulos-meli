@@ -1,8 +1,6 @@
 package com.grodriguez.melisearchcore.model.domain.search;
 
 import com.grodriguez.melisearchcore.model.domain.items.BaseItem;
-import com.grodriguez.melisearchcore.model.domain.items.Shipping;
-import com.grodriguez.melisearchcore.model.domain.site.SiteCurrency;
 import com.grodriguez.melisearchcore.model.dtos.SearchItemDTO;
 
 // TODO: reemplazar el resultado de buscar un artículo de SearchItemDTO a SearchItem
@@ -24,6 +22,7 @@ public class SearchItem extends BaseItem {
         this.price = dto.getPrice();
         this.thumbnailUrl = dto.getThumbnailUrl();
         this.isFavorite = false;
+        this.bestSeller = dto.isBestSeller();
     }
 
     // region GET-SET

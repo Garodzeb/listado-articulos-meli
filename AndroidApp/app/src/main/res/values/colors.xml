@@ -5,11 +5,14 @@
     <color name="text_hint_color">#757575</color>
     <color name="text_button_color">#1976D2</color>
     <color name="best_seller_badge_background_color">#FF773D</color>
-    <color name="discount_badge_text_color">#0888E4</color>
-    <color name="discount_badge_background_color">#BAE2FF</color>
+    <color name="button_primary_color">#0888E4</color>
+    <color name="button_secondary_color">#BAE2FF</color>
     <color name="free_shipping_badge_text_color">#40B761</color>
     <color name="rating_empty_star_color">#D9D9D9</color>
     <color name="rating_full_star_color">#2294E5</color>
+    <color name="filters_background_color">#EBF1F8</color>
+    <color name="switch_inactive_thumb_color">#7D8698</color>
+    <color name="switch_inactive_track_color">#C1CADC</color>
 
     <!-- Theme colors -->
     <color name="md_theme_light_primary">#FFEB3B</color>
@@ -18,7 +21,7 @@
     <color name="md_theme_light_onPrimaryContainer">#1F1C00</color>
     <color name="md_theme_light_secondary">#005DB8</color>
     <color name="md_theme_light_onSecondary">#FFFFFF</color>
-    <color name="md_theme_light_secondaryContainer">#D6E3FF</color>
+    <color name="md_theme_light_secondaryContainer">#FFFFFF</color>
     <color name="md_theme_light_onSecondaryContainer">#001B3E</color>
     <color name="md_theme_light_tertiary">#994617</color>
     <color name="md_theme_light_onTertiary">#FFFFFF</color>
@@ -28,7 +31,7 @@
     <color name="md_theme_light_errorContainer">#FFDAD6</color>
     <color name="md_theme_light_onError">#FFFFFF</color>
     <color name="md_theme_light_onErrorContainer">#410002</color>
-    <color name="md_theme_light_background">#F6FEFF</color>
+    <color name="md_theme_light_background">#FFFFFF</color>
     <color name="md_theme_light_onBackground">#001F24</color>
     <color name="md_theme_light_surface">#F6FEFF</color>
     <color name="md_theme_light_onSurface">#001F24</color>

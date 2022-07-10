@@ -9,6 +9,7 @@ public class ItemDetail extends BaseItem{
 
     private List<ItemPicture> pictures = new ArrayList<>();
     private float availableQty = -1;
+    private float soldQty = 0;
     private String warranty = "";
     private ItemRating itemRating = new ItemRating();
 
@@ -24,6 +25,7 @@ public class ItemDetail extends BaseItem{
         this.condition = dto.getCondition();
         this.price = dto.getPrice();
         this.availableQty = dto.getAvailableQty();
+        this.soldQty = dto.getSoldQty();
         this.warranty = dto.getWarranty();
         this.pictures = dto.getPictures();
     }
@@ -44,6 +46,14 @@ public class ItemDetail extends BaseItem{
 
     public void setAvailableQty(float availableQty) {
         this.availableQty = availableQty;
+    }
+
+    public float getSoldQty() {
+        return soldQty;
+    }
+
+    public void setSoldQty(float soldQty) {
+        this.soldQty = soldQty;
     }
 
     public String getWarranty() {
