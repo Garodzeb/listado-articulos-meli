@@ -2,17 +2,17 @@
 
 Esta solución se compone de dos proyectos:
 
-- **app**: Como su nombre lo indica este proyecto representa la aplicación en android y contiene todas las referencias al código nativo y es la que se encarga de realizar la comunicación con las APIs.
+- **app**: Este proyecto es donde se encuentra el código nativo de la aplicación y el código utilizado en la comunicación con las APIs.
 
-- **MeliSearchCore**: Este proyeto representa el dominio de la aplicación y en el se encuentra la representación de todos los objetos del dominio, repositorios e interfaces que son utilizados por la App para definir las reglas de negocio.
+- **MeliSearchCore**: Este proyeto contiene las clases del dominio de la aplicación donde se definen las reglas de negocio.
 
 # MeliSearchCore
 
 ## datasource_abstractions
 
-En esta carpeta se enuentran las interfaces que definen los dataSources que utilizan los repositorios para definir los distintos procesos de la aplicación, en esta instancia se provee una interfaz tanto para los repositorios locales como remotos.
+En esta carpeta se enuentran las interfaces que definen los dataSources que utilizan los repositorios para definir los distintos procesos de la aplicación, en esta carpeta se provee una interfaz tanto para los repositorios locales como remotos.
 
-> Se define como datasource local a todos los repositorios que se encargan de manipular información directamente desde el dispositivo y en cambio un datasource remoto es el cual se debe comunicar con las APIs y no trabaja con los datos almacenados en el dispositivo.
+> Se define como datasource local a las clases que se encargan de manipular información directamente desde el dispositivo y en cambio un datasource remoto son las clases que se debe comunicar con las APIs y no trabajan con los datos almacenados en el dispositivo.
 
 ## model
 
@@ -22,25 +22,25 @@ En esta carpeta se definen todos los objetos del dominio utilizados a lo largo d
 
 ## repositories
 
-En esta carpeta se encuentran los repositorios que son los encargados de definir la comunicación con los dataSources y son la única manera que tiene la aplicación de comunicarse ellos, de todos modos, los repositorios abstraen a la aplicación de tener que decidir si deben utilizar un repositorio local o remoto, ese tipo de decisiones las toma directamente el repositorio.
+En esta carpeta se encuentran los repositorios, cada repositorio se encarga de definir la comunicación con los dataSources y es responsable de seleccionar si se va a utilizar un datasource remoto o local para cumplir con los requisitos de la interfaz y son la única manera que tiene la aplicación de comunicarse con los datasources.
 
 # app
 
 ## application
 
-En esta carpeta se encontra la clase **AppDependenciesContainer** esta clase que utiliza el patrón singleton es la encargada de mantener una única instancia de los repositorios que van a ser utilizados a lo largo de la aplicación.
+En esta carpeta se encontra la clase **AppDependenciesContainer** esta clase (que utiliza el patrón singleton) se encarga de mantener una única instancia de los repositorios que van a ser utilizados por los distintos ViewModels a lo largo de la aplicación.
 
 ## framework
 
-En esta carpeta se encuentran las implementaciones de los distintos dataSources así como las clases necesarias para comunicarse con las APIs utilizando **Retrofit** (**network**) y la definición de las entidades de la base de datos local del dispositivo (**room**).
+En esta carpeta se encuentran las implementaciones de los distintos dataSources, para simplificar la comunicación con las APIs se utiliza la librería de **Retrofit** y para el manejo de la base de datos interna de la aplicación se utilizan las librearías de **Room** provistas por el sdk de Android.
 
 Adicionalmente en esta carpeta también se encuentra la carpeta **utils** la cual contiene métodos auxiliares, constantes, etc. que son utilizados para evitar duplicar código a lo largo de la aplicación.
 
 ## presentation
 
-En esta carpeta es donde se definen los Activities, Fragments, ViewModels y demás clases que son referentes a la interfaz.
+En esta carpeta es donde se definen los Activities, Fragments, ViewModels y demás clases que se encargan de manejar el comportamiento de la interfaz.
 
-> **Nota**: En esta carpeta también se encuetnra la clase **ViewModelFactory** que de manera similar a la clase **AppDependenciesContainer** se encarga de centralizar en un único lugar la creación de los ViewModel pero además de esto esta clase se utiliza en conjunto con la clase **ViewModelProvider** que permite la creación de ViewModels para un alcance predeterminado; la principal ventaja de esto es que se compartir ViewModels entre un Activity madre y sus fragments hijos.
+> **Nota**: En esta carpeta también se encuetnra la clase **ViewModelFactory** que de manera similar a la clase **AppDependenciesContainer** se encarga de centralizar en un único lugar la creación de los ViewModel, esta clase se utiliza en conjunto con la clase **ViewModelProvider** para permitir la creación de ViewModels para un alcance predeterminado; la principal ventaja de esto es que se pueden compartir información entre un Activity madre y sus fragments hijos por medio del ViewModel común.
 
 # Pruebas Unitarias
 
@@ -57,7 +57,9 @@ Se utiliza la librería de [Retrofit](https://square.github.io/retrofit/) para s
 Se utiliza la librería de [RxJava](https://github.com/ReactiveX/RxJava) para poder simplificar el manejo de los threads durante el desarrollo de la aplicación.
 
 ## Picasso
-Se utiliza la Librería de [Picasso](https://square.github.io/picasso/) para facilitar la carga de imágenes ya que permite cargar las imágenes en un ImageView pasando un URL. 
+Se utiliza la Librería de [Picasso](https://square.github.io/picasso/) para facilitar la carga de imágenes de los artículos ya que permite cargar las imágenes en un ImageView pasando un URL.
+
+> Debido a que las imágenes de los artículos estan expuestas por Http se tuvo que modificar el manifest de la aplicación para permitir trafico por Http sin encriptar (android:usesCleartextTraffic="true").
 
 # Inicialización del entorno
 
