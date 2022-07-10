@@ -95,8 +95,10 @@ Para poder compilar la solución se deben setear las siguientes variables de ent
 
 ## Scripts de inicialización
 
-Para facilitar la inicialización de estas variables se creo un script en ***InitializationScripts/zsh/initializeTestEnv.sh*** el cual inicializa todas estas variables con valores de prueba apuntando a la API pública de MercadoLibre (https://api.mercadolibre.com/), este script se realizó para utilizar el shell **zsh** y guarda crea las variables en el archivo **.zprofile** para que esten disponibles para todos los shells del usuario.
+Para facilitar la inicialización de estas variables se creo un script en ***InitializationScripts/zsh/initializeTestEnv.sh*** el cual inicializa todas estas variables con valores de prueba apuntando a la API pública de MercadoLibre (https://api.mercadolibre.com/), este script se realizó para utilizar el shell **zsh** y agrega/modifica las variables en el archivo **.zprofile** para que esten disponibles para todos los shells del usuario.
 
-> Nota: si se tenía Android Studio abierto cuando se corrió este script se deberá cerrar y volver a abrir para que detecte las nuevas variables de entorno.
+> **Nota**: si se tenía Android Studio abierto cuando se corrió este script se deberá cerrar y volver a abrir para que detecte las nuevas variables de entorno.
 
 En las pruebas unitarias de la aplicación se verifica que todas estas variables esten inicializadas con algún valor.
+
+> Debido a que esta es una aplicación de prueba todas estas variables tienen definido un valor por defecto en el caso de que no se encuentren las variables de entorno, estos valores estan definidos en el archivo **./app/build.graddle**
