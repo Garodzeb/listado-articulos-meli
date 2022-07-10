@@ -326,7 +326,9 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void showItemPicture(ItemPicture picture) {
-        Picasso.get().load(picture.getUrl()).into(binding.imgActivityProductDetailProductImage);
+        if(!picture.getUrl().isEmpty()) {
+            Picasso.get().load(picture.getUrl()).into(binding.imgActivityProductDetailProductImage);
+        }
     }
 
     // Muestara una pantalla de error y logea el error en la consola

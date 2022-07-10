@@ -9,8 +9,8 @@ public class FilterValue {
     private String id = "";
     private String name = "";
     private boolean selected = false;
-    private int results = 0; //TODO: Solo tiene valor cuando se pasa en el campo availablefilters
-    private List<SiteCategory> pathFromRoot = new ArrayList<>(); //TODO: Solo tiene un valor cuando el filtro es igual a 'Category'
+    private int results = 0; //TODO: validar si solo tiene valor cuando se pasa en el campo availablefilters
+    private List<SiteCategory> pathFromRoot = new ArrayList<>(); //TODO: validar si solo tiene un valor cuando el filtro es igual a 'Category'
 
     public FilterValue() {
     }

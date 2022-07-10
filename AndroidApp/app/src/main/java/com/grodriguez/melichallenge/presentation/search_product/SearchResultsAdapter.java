@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.grodriguez.melichallenge.R;
 import com.grodriguez.melichallenge.databinding.FragmentSearchResultsItemBinding;
-import com.grodriguez.melichallenge.framework.utils.AppConstants;
 import com.grodriguez.melichallenge.framework.utils.AppUtils;
-import com.grodriguez.melisearchcore.model.domain.items.ItemDetail;
 import com.grodriguez.melisearchcore.model.domain.search.SearchItem;
 import com.squareup.picasso.Picasso;
 
@@ -23,14 +21,14 @@ import java.util.List;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.SearchResultItemViewHolder> {
 
-    public interface IItemSelectedListener {
+    public interface ISearchResultsAdapterListener {
         void onItemSelected(SearchItem item);
     }
 
     List<SearchItem> resultItems = new ArrayList<>();
-    IItemSelectedListener listener;
+    ISearchResultsAdapterListener listener;
 
-    public SearchResultsAdapter(IItemSelectedListener listener) {
+    public SearchResultsAdapter(ISearchResultsAdapterListener listener) {
         this.listener = listener;
     }
 
@@ -62,13 +60,13 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     static class SearchResultItemViewHolder extends RecyclerView.ViewHolder {
         SearchItem item;
         Context context;
-        IItemSelectedListener listener;
+        ISearchResultsAdapterListener listener;
         FragmentSearchResultsItemBinding binding;
 
         public SearchResultItemViewHolder(@NonNull View itemView,
                                           Context context,
                                           FragmentSearchResultsItemBinding binding,
-                                          IItemSelectedListener listener) {
+                                          ISearchResultsAdapterListener listener) {
             super(itemView);
             this.context = context;
             this.binding = binding;
@@ -76,44 +74,54 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         }
 
         public void bind(SearchItem item) {
-            this.item = item;
-            binding.txtFragSearchResultsItemTitle.setText(item.getTitle());
+            try {
 
-            NumberFormat formatter = NumberFormat.getNumberInstance();
-            formatter.setGroupingUsed(true);
-            String price = formatter.format(item.getPrice());
+                this.item = item;
+                binding.txtFragSearchResultsItemTitle.setText(item.getTitle());
 
-            binding.txtFragSearchResultsItemPrice.setText(String.format("%s %s", item.getCurrency().getSymbol(), price));
+                NumberFormat formatter = NumberFormat.getNumberInstance();
+                formatter.setGroupingUsed(true);
+                String price = formatter.format(item.getPrice());
 
-            ImageView imgItemThumbnail  = binding.imgFragSearchResultsItemImage;
-            Picasso.get().load(item.getThumbnailUrl()).into(imgItemThumbnail);
+                binding.txtFragSearchResultsItemPrice.setText(String.format("%s %s", item.getCurrency().getSymbol(), price));
 
-            if (item.getShipping().isFreeShipping())
-                binding.txtFragSearchResultsItemFreeShipping.setVisibility(View.VISIBLE);
-
-            if (item.isBestSeller())
-                binding.txtFragSearchResultsItemBestSeller.setVisibility(View.VISIBLE);
-
-            binding.imgFragSearchResultsItemFavorite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ImageView favoriteView = binding.imgFragSearchResultsItemFavorite;
-
-                    if(!item.isFavorite()) {
-                        favoriteView.setImageResource(R.drawable.ic_favorite_24);
-                        item.setFavorite(true);
-                    }
-                    else
-                    {
-                        favoriteView.setImageResource(R.drawable.ic_favorite_border_24);
-                        item.setFavorite(false);
-                    }
+                // Verifica que la imagen no sea vacía
+                if (!item.getThumbnailUrl().trim().isEmpty()) {
+                    ImageView imgItemThumbnail = binding.imgFragSearchResultsItemImage;
+                    Picasso.get().load(item.getThumbnailUrl()).into(imgItemThumbnail);
+                } else {
+                    binding.imgFragSearchResultsItemImage.setVisibility(View.GONE);
+                    binding.imgFragSearchResultsItemFavorite.setVisibility(View.GONE);
                 }
-            });
 
-            binding.cvFragSearchResultsItem.setOnClickListener(view -> {
-                listener.onItemSelected(this.item);
-            });
+                if (item.getShipping().isFreeShipping())
+                    binding.txtFragSearchResultsItemFreeShipping.setVisibility(View.VISIBLE);
+
+                if (item.isBestSeller())
+                    binding.txtFragSearchResultsItemBestSeller.setVisibility(View.VISIBLE);
+
+                binding.imgFragSearchResultsItemFavorite.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ImageView favoriteView = binding.imgFragSearchResultsItemFavorite;
+
+                        if (!item.isFavorite()) {
+                            favoriteView.setImageResource(R.drawable.ic_favorite_24);
+                            item.setFavorite(true);
+                        } else {
+                            favoriteView.setImageResource(R.drawable.ic_favorite_border_24);
+                            item.setFavorite(false);
+                        }
+                    }
+                });
+
+                binding.cvFragSearchResultsItem.setOnClickListener(view -> {
+                    listener.onItemSelected(this.item);
+                });
+            }
+            catch (Exception ex) {
+                AppUtils.logError(ex);
+            }
         }
 
     }// End ViewHolder Class

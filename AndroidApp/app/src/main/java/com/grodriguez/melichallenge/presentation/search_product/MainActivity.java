@@ -1,11 +1,5 @@
 package com.grodriguez.melichallenge.presentation.search_product;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,16 +8,19 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.grodriguez.melichallenge.R;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.grodriguez.melichallenge.application.AppDependenciesContainer;
 import com.grodriguez.melichallenge.databinding.ActivityMainBinding;
 import com.grodriguez.melichallenge.framework.room.AppRoomDatabase;
 import com.grodriguez.melichallenge.framework.utils.AppConstants;
 import com.grodriguez.melichallenge.framework.utils.AppUtils;
 import com.grodriguez.melichallenge.presentation.ViewModelsFactory;
-import com.grodriguez.melichallenge.presentation.initial.InitialActivity;
 import com.grodriguez.melichallenge.presentation.product_detail.ProductDetailActivity;
-import com.grodriguez.melichallenge.presentation.search_product.filters.SearchFilterFragment;
 import com.grodriguez.melichallenge.presentation.ui.UIState;
 import com.grodriguez.melisearchcore.model.domain.search.SearchItem;
 import com.grodriguez.melisearchcore.model.domain.search.SearchQuery;
@@ -31,9 +28,10 @@ import com.grodriguez.melisearchcore.model.domain.search.SearchResult;
 
 import java.text.NumberFormat;
 
-public class MainActivity extends AppCompatActivity implements SearchResultsAdapter.IItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements SearchResultsAdapter.ISearchResultsAdapterListener {
 
     SearchResultsAdapter searchResultsAdapter;
+    LinearLayoutManager layoutManager;
     MainViewModel mainViewModel;
     ActivityMainBinding binding;
 
@@ -55,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements SearchResultsAdap
 
             initializeUI();
             initializeObservers();
+
         } catch (Exception ex) {
             // Finaliza la actividad si ocurre un error en la inicialización
             AppUtils.logError(ex);
@@ -87,16 +86,18 @@ public class MainActivity extends AppCompatActivity implements SearchResultsAdap
             mainViewModel.dispose();
     }
 
-
     @Override
     public void onItemSelected(SearchItem item) {
+        try {
+            AppUtils.removeCustomPreference(getApplicationContext(), AppConstants.CURRENT_ITEM_ID_SHARED_PREFERENCE_KEY);
+            AppUtils.saveCustomStringPreference(getApplicationContext(), AppConstants.CURRENT_ITEM_ID_SHARED_PREFERENCE_KEY, item.getId());
 
-        AppUtils.removeCustomPreference(getApplicationContext(), AppConstants.CURRENT_ITEM_ID_SHARED_PREFERENCE_KEY);
-        AppUtils.saveCustomStringPreference(getApplicationContext(), AppConstants.CURRENT_ITEM_ID_SHARED_PREFERENCE_KEY, item.getId());
-
-        Intent intent = new Intent(MainActivity.this, ProductDetailActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+            Intent intent = new Intent(MainActivity.this, ProductDetailActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } catch (Exception ex) {
+            showErrorScreen(ex);
+        }
     }
 
     // endregion
@@ -109,10 +110,13 @@ public class MainActivity extends AppCompatActivity implements SearchResultsAdap
         binding.txtActivityMainSearchQuery.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                String searchValue = binding.txtActivityMainSearchQuery.getText().toString();
+                String searchValue = binding.txtActivityMainSearchQuery.getText().toString().trim();
 
-                if (!searchValue.isEmpty())
+                // Elimina los filtros aplicados y vuelve a realizar una consulta
+                if (!searchValue.isEmpty()) {
+                    mainViewModel.clearFilters();
                     mainViewModel.searchItem(searchValue);
+                }
 
                 return false;
             }
@@ -127,9 +131,39 @@ public class MainActivity extends AppCompatActivity implements SearchResultsAdap
         RecyclerView rv = binding.rvActivityMainSearchResultsList;
 
         searchResultsAdapter = new SearchResultsAdapter(this);
+        layoutManager = new LinearLayoutManager(this);
 
-        rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setLayoutManager(layoutManager);
         rv.setAdapter(searchResultsAdapter);
+
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                try {
+                    // Cuando se llega al último artículo de la lista, vuelve a realizar la búsqueda pero esta
+                    // vez aplica un offset a las consulta.
+                    // Dependiendo de la dirección del scroll se agrega o se resta del offset a aplicar
+                    if (!recyclerView.canScrollVertically(AppConstants.SCROLL_DIRECTION_DOWN)
+                            && recyclerView.canScrollVertically(AppConstants.SCROLL_DIRECTION_UP)) {
+
+                        mainViewModel.searchItemAddOffset();
+                    }
+                    /* TODO: Se deja deshabilitado el volver a cargar la consulta restando un offset
+                    *  debido a que no se encontro una manera de evitar que se ejecute con cualquier
+                    * movimiento del usuario, idealmente se deberia poder ejecutar después de que el
+                    * usuario deje de scrollear y no apenas se activa el scroll que es lo que ocurre
+                    * actualmente */
+                    /*else if (!recyclerView.canScrollVertically(AppConstants.SCROLL_DIRECTION_UP)) {
+                        mainViewModel.searchItemRemoveOffset();
+                    }*/
+
+                } catch (Exception ex) {
+                    showErrorScreen(ex);
+                }
+            }
+        });
     }
 
     private void initializeObservers() {
@@ -154,8 +188,7 @@ public class MainActivity extends AppCompatActivity implements SearchResultsAdap
         if (binding.fcvActivityMainSearchFilters.getVisibility() == View.GONE) {
             mainViewModel.loadAvailableFilters();
             binding.fcvActivityMainSearchFilters.setVisibility(View.VISIBLE);
-        }
-        else
+        } else
             binding.fcvActivityMainSearchFilters.setVisibility(View.GONE);
     }
 
@@ -204,23 +237,33 @@ public class MainActivity extends AppCompatActivity implements SearchResultsAdap
             binding.rvActivityMainSearchResultsList.setVisibility(View.VISIBLE);
             binding.lblActivityMainNoSearchResults.setVisibility(View.GONE);
 
-            int totalResults = result.getPaging().getTotal();
+            // Busca la cantidad de resultados encontrados
+            int totalResults = result.getPagingData().getTotal();
             String formattedQty;
+            String searchResultsQtyLabel;
 
             // Modifica el mensaje a mostrar en base a si se encontraron más resultados que el
-            // tope permitido para mostrar
-            if (totalResults < AppConstants.MAX_SEARCH_RESULTS_DISPLAY_QTY)
-                formattedQty = NumberFormat.getInstance().format(result.getPaging().getTotal());
-            else
+            // tope permitido para mostrar (2000)
+            if (totalResults < AppConstants.MAX_SEARCH_RESULTS_DISPLAY_QTY) {
+                formattedQty = NumberFormat.getInstance().format(result.getPagingData().getTotal());
+                searchResultsQtyLabel = String.format("%s resultados", formattedQty);
+            } else {
                 formattedQty = NumberFormat.getInstance().format(AppConstants.MAX_SEARCH_RESULTS_DISPLAY_QTY);
+                searchResultsQtyLabel = String.format("+%s resultados", formattedQty);
+            }
 
-            String searchResultsQtyLabel = String.format("%s resultados", formattedQty);
+            // Muestra la cantidad de registros encontrados
             binding.lblActivityMainSearchResultQty.setText(searchResultsQtyLabel);
 
+            // Muestra la cantidad de filtros seleccionados
             String appliedFiltersLabel = String.format("Filtrar (%s)", result.getFilters().size());
             binding.btnActivityMainSearchFilters.setText(appliedFiltersLabel);
 
+            // Actualiza el recyclerview con los artículos a mostrar
             searchResultsAdapter.updateItems(result.getResults());
+
+            // Una vez cargado el artículo muestra el artículo en la primera posición de la lista
+            layoutManager.scrollToPosition(0);
         } else {
             binding.rvActivityMainSearchResultsList.setVisibility(View.GONE);
             binding.lblActivityMainNoSearchResults.setVisibility(View.VISIBLE);

@@ -32,6 +32,7 @@ public class SearchFilterFragment extends Fragment implements ISearchFiltersList
     public SearchFilterFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +68,10 @@ public class SearchFilterFragment extends Fragment implements ISearchFiltersList
 
         binding.btnFragSearchFiltersCleanFilters.setOnClickListener(view -> {
             mainViewModel.clearFilters();
+
+            // Vuelve a realizar la consulta sin filtros para obtener los filtros por defecto
+            if (mainViewModel.getCurrentSearchQuery().getValue() != null)
+                mainViewModel.searchItem(mainViewModel.getCurrentSearchQuery().getValue().getQuery());
         });
 
         binding.btnFragSearchFiltersApplyFilters.setOnClickListener(view -> {
@@ -84,8 +89,7 @@ public class SearchFilterFragment extends Fragment implements ISearchFiltersList
 
             rv.setLayoutManager(new LinearLayoutManager(getContext()));
             rv.setAdapter(adapter);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             AppUtils.logError(ex);
         }
     }
@@ -96,8 +100,7 @@ public class SearchFilterFragment extends Fragment implements ISearchFiltersList
                 if (filters != null)
                     // Actualiza los filtros mostrados en pantalla
                     adapter.updateFilters(filters);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 AppUtils.logError(ex);
             }
         });

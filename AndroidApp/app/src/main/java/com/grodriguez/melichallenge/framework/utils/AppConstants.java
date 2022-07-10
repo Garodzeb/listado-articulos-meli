@@ -16,7 +16,6 @@ public class AppConstants {
 
     public static final String SHARED_PREFERENCE_FILE_ID = "MELI_CHALLENGE";
     public static final String CURRENT_ITEM_ID_SHARED_PREFERENCE_KEY = "CURRENT_ITEM";
-    public static final String LAST_SEARCH_QUERY_SHARED_PREFERENCE_KEY = "LAST_SEARCH_QUERY";
 
     // endregion
 
@@ -37,8 +36,16 @@ public class AppConstants {
     // region Item Tags
 
     public static final String BEST_SELLER_TAG = "best_seller_candidate";
+
+    // endregion
+
+    // region others
+
     public static final String ITEM_CONDITION_NEW = "new";
     public static final String ITEM_CONDITION_USED = "used";
+    public static final String OFFSET_FILTER_KEY = "offset";
+    public static final int SCROLL_DIRECTION_UP = -1;
+    public static final int SCROLL_DIRECTION_DOWN = 1;
 
     // endregion
 

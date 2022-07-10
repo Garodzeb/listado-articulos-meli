@@ -190,7 +190,12 @@ public class ProductDetailViewModel extends BaseViewModel {
                         // Informa a la interfaz que se terminaron de cargar los datos
                         getUIState().setValue(new UIState(UIStatus.UI_IDLE));
                         getCurrentItem().setValue(item);
-                        getNextPicture();
+
+                        // Informa a la interfaz que debe mostrar la primera foto del artículo
+                        if (item.getPictures().size() > 0) {
+                            getCurrentPictureIndex().setValue(0);
+                            getcurrentPicture().setValue(item.getPictures().get(0));
+                        }
                     }
 
                     @Override

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SearchResult {
 
-    private PagingMetadata paging = new PagingMetadata();
+    private PagingMetadata pagingData = new PagingMetadata();
     private List<SearchItem> results = new ArrayList<>();
     private SortType sort = new SortType();
     private List<SortType> availableSorts = new ArrayList<>();
@@ -19,7 +19,7 @@ public class SearchResult {
     }
 
     public SearchResult(SearchResultDTO dto) {
-        this.paging = dto.getPaging();
+        this.pagingData = dto.getPaging();
         this.sort = dto.getSort();
         this.availableSorts = dto.getAvailableSorts();
         this.filters = dto.getFilters();
@@ -36,12 +36,12 @@ public class SearchResult {
 
     // region GET-SET
 
-    public PagingMetadata getPaging() {
-        return paging;
+    public PagingMetadata getPagingData() {
+        return pagingData;
     }
 
-    public void setPaging(PagingMetadata paging) {
-        this.paging = paging;
+    public void setPagingData(PagingMetadata pagingData) {
+        this.pagingData = pagingData;
     }
 
     public List<SearchItem> getResults() {

@@ -11,6 +11,7 @@ import com.grodriguez.melichallenge.presentation.ui.BaseViewModel;
 import com.grodriguez.melichallenge.presentation.ui.UIState;
 import com.grodriguez.melisearchcore.model.domain.search.Filter;
 import com.grodriguez.melisearchcore.model.domain.search.FilterValue;
+import com.grodriguez.melisearchcore.model.domain.search.PagingMetadata;
 import com.grodriguez.melisearchcore.model.domain.search.QueryParameter;
 import com.grodriguez.melisearchcore.model.domain.search.SearchItem;
 import com.grodriguez.melisearchcore.model.domain.search.SearchQuery;
@@ -46,6 +47,7 @@ public class MainViewModel extends BaseViewModel {
     private MutableLiveData<List<Filter>> availableFilters;
     private MutableLiveData<List<QueryParameter>> searchParameters;
     private MutableLiveData<Boolean> filtersApplied;
+    private MutableLiveData<PagingMetadata> currentPagingInfo;
 
     // region GET-SET
 
@@ -92,6 +94,14 @@ public class MainViewModel extends BaseViewModel {
         getFiltersApplied().setValue(appliedFilters);
     }
 
+    public MutableLiveData<PagingMetadata> getCurrentPagingInfo() {
+
+        if (currentPagingInfo == null)
+            currentPagingInfo = new MutableLiveData<>();
+
+        return currentPagingInfo;
+    }
+
     // endregion
 
     // endregion
@@ -133,6 +143,8 @@ public class MainViewModel extends BaseViewModel {
                     public void onSuccess(@NonNull SearchResultDTO resultDTO) {
                         SearchResult result = new SearchResult(resultDTO);
 
+                        getCurrentPagingInfo().setValue(result.getPagingData());
+
                         loadCurrentFilters(result);
                         loadItemsCurrencyInfo(result);
                     }
@@ -144,6 +156,68 @@ public class MainViewModel extends BaseViewModel {
                 });
 
         addDisposableObserver(observer);
+    }
+
+    // Realiza la misma consulta de búsqueda de artículo guardada en memoria pero le aplica un offset
+    // para obtener los nuevos resultados, en este caso le agrega un offset
+    public void searchItemAddOffset() {
+        SearchQuery query = getCurrentSearchQuery().getValue();
+
+        // Valida que la consulta no sea nula
+        if (query != null) {
+
+            // Busca los parámetros de búsqueda de la consulta a realizar
+            List<QueryParameter> parameters = getSearchParameters().getValue();
+
+            if (parameters == null)
+                parameters = new ArrayList<>();
+
+            // Agrega el offset que corresponde en base a la última información de paginación obtenida
+            PagingMetadata pagingData = getCurrentPagingInfo().getValue();
+
+            // Valida que no se hayan mostrado todos los registros posibles
+            if (pagingData != null && !pagingData.pagingLimitReached()) {
+                // Agrega el offset a aplicar a la consulta
+                QueryParameter offsetToApply = new QueryParameter();
+                offsetToApply.setId(AppConstants.OFFSET_FILTER_KEY);
+                offsetToApply.setValue(Integer.toString(pagingData.applyOffset()));
+                parameters.add(offsetToApply);
+
+                query.setParameters(parameters);
+                searchItem(query);
+            }
+        }
+    }
+
+    // Realiza la misma consulta de búsqueda de artículo guardada en memoria pero le aplica un offset
+    // para obtener los nuevos resultados, en este caso le resta al offset actual
+    public void searchItemRemoveOffset() {
+        SearchQuery query = getCurrentSearchQuery().getValue();
+
+        // Valida que la consulta no sea nula
+        if (query != null) {
+
+            // Busca los parámetros de búsqueda de la consulta a realizar
+            List<QueryParameter> parameters = getSearchParameters().getValue();
+
+            if (parameters == null)
+                parameters = new ArrayList<>();
+
+            // Agrega el offset que corresponde en base a la última información de paginación obtenida
+            PagingMetadata pagingData = getCurrentPagingInfo().getValue();
+
+            // Valida que se haya aplicado algún offset previamente
+            if (pagingData != null && pagingData.getOffset() > 0) {
+                // Agrega el offset a aplicar a la consulta
+                QueryParameter offsetToApply = new QueryParameter();
+                offsetToApply.setId(AppConstants.OFFSET_FILTER_KEY);
+                offsetToApply.setValue(Integer.toString(pagingData.removeOffset()));
+                parameters.add(offsetToApply);
+
+                query.setParameters(parameters);
+                searchItem(query);
+            }
+        }
     }
 
     // Recupera la consulta realizada por el usuario
@@ -199,90 +273,59 @@ public class MainViewModel extends BaseViewModel {
 
     // Agrega el filtro seleccionado a la consulta a realizar
     public void addFilterToQuery(Filter filter, FilterValue selectedValue) {
-        SearchResult searchResult = getSearchResult().getValue();
+        List<QueryParameter> parameters = getSearchParameters().getValue();
 
-        // Valida si ya se había realizado una consulta previa con filtros
-        if (searchResult != null && searchResult.getFilters().size() > 0) {
-            // Busca los filtros actuales de la consulta
-            List<Filter> currentFilters = searchResult.getFilters();
+        // Valida si ya se había agregado el filtro a la consulta
+        int i = 0;
+        int parametersSize = parameters.size();
+        boolean filterFound = false;
 
-            // Busca si ya se había seteado el mismo tipo de filtro
-            int i = 0;
-            int filtersSize = currentFilters.size();
-            Filter appliedFilter = null;
+        while (i < parametersSize && !filterFound) {
+            QueryParameter qParam = parameters.get(i);
 
-            while (i < filtersSize && appliedFilter == null) {
-                Filter aux = currentFilters.get(i);
+            if (qParam.getId().equalsIgnoreCase(filter.getId())) {
+                // Si ya había agregsado el filtro, actualiza su valor
+                filterFound = true;
 
-                if (aux.getId().equals(filter.getId()))
-                    appliedFilter = aux;
-
+                qParam.setValue(selectedValue.getId());
+            } else
                 i++;
-            }
-
-            // Si ya se había aplicado el mismo tipo de filtro
-            if (appliedFilter != null) {
-                int j = 0;
-                int currentQueryLength = Objects.requireNonNull(getSearchParameters().getValue()).size();
-                boolean foundParameter = false;
-
-                List<QueryParameter> parameters = getSearchParameters().getValue();
-
-                while (j < currentQueryLength && !foundParameter) {
-                    QueryParameter qParam = parameters.get(j);
-
-                    if (qParam.getId().equals(appliedFilter.getId())) {
-                        foundParameter = true;
-                        parameters.remove(j);
-
-                        // Dependiendo del tipo de filtro reemplaza o agrega al listado de valores el filtro
-                        // a aplicar
-                        if (appliedFilter.getType() == FilterType.STRING) {
-                            //TODO: validar si este es el único caso al que aplica
-
-                            // Si el filtro es de tipo STRING se agrega el valor seleccionado en vez
-                            // de reemplazarlo, esto se hace separando con comas cada nuevo valor
-                            // Ej.: param1,param2...
-                            String newValue = String.format("%s,%s", qParam.getValue(), selectedValue.getId());
-                            parameters.add(new QueryParameter(filter.getId(), newValue));
-                        } else
-                            parameters.add(new QueryParameter(filter.getId(), selectedValue.getId()));
-                    }
-
-                    j++;
-                }
-
-                getSearchParameters().setValue(parameters);
-
-            } else {
-                // Si no se había aplicado el filtro previamente, lo agrega al listado de filtros
-                Objects.requireNonNull(getSearchParameters().getValue())
-                        .add(new QueryParameter(filter.getId(), selectedValue.getId()));
-            }
-        } else {
-            // Si es la primera consulta que se realiza, agrega directamente el filtro al listado de filtros
-            Objects.requireNonNull(getSearchParameters().getValue())
-                    .add(new QueryParameter(filter.getId(), selectedValue.getId()));
         }
+
+        // Si no se encontró el filtro en la lista de filtros aplicados
+        if (!filterFound) {
+            // Agrega el filtro a la lista de parámetros
+            parameters.add(new QueryParameter(filter.getId(), selectedValue.getId()));
+        }
+
+        getSearchParameters().setValue(parameters);
     }
 
+    // Elimina un filtro de la lista de filtros aplicados
     public void removeFilter(Filter filter, FilterValue selectedValue) {
+        // Valida que se hayan ingresado filtros para eliminar
         if (getSearchParameters().getValue() != null && getSearchParameters().getValue().size() > 0) {
+
             int i = 0;
             int parametersSize = getSearchParameters().getValue().size();
-            boolean filterFound = false;
+            QueryParameter foundFilter = null;
 
-            while (i < parametersSize && !filterFound) {
+            // Busca el filtro a eliminar
+            while (i < parametersSize && foundFilter == null) {
                 QueryParameter qParam = getSearchParameters().getValue().get(i);
 
-                if (qParam.getId().equals(filter.getId()) && qParam.getValue().equals(selectedValue.getId()))
-                    filterFound = true;
+                // Valida por que el id y el valor sean iguales al filtro a eliminar
+                if (qParam.getId().equals(filter.getId())
+                        && qParam.getValue().equalsIgnoreCase(selectedValue.getId()))
+                    foundFilter = qParam;
                 else
                     i++;
             }
 
-            if (filterFound)
+            // Elimina el filtro encontrado
+            if (foundFilter != null) {
                 getSearchParameters().getValue().remove(i);
+            }
         }
 
     }
@@ -290,11 +333,6 @@ public class MainViewModel extends BaseViewModel {
     // Limpia los filtros aplicados por el usuario
     public void clearFilters() {
         getSearchParameters().setValue(new ArrayList<>());
-
-        // Realiza una búsqueda sin parámetros para volver a tener los filtros por defecto devueltos
-        // por la API
-        if (currentSearchQuery.getValue() != null)
-            searchItem(currentSearchQuery.getValue().getQuery());
     }
 
     public void loadAvailableFilters() {

@@ -176,30 +176,35 @@ public class SearchFiltersAdapter extends RecyclerView.Adapter<SearchFiltersAdap
 
         @Override
         public void bind(Filter filter) {
-            currentFilter = filter;
-            binding.lblFragFilterTypeRadiobuttonTitle.setText(filter.getName());
+            try {
+                currentFilter = filter;
+                binding.lblFragFilterTypeRadiobuttonTitle.setText(filter.getName());
 
-            // Elimina los botones previos que puedan existir
-            binding.rgFragFilterTypeRadiobuttonAvialableValues.removeAllViews();
+                // Elimina los botones previos que puedan existir
+                binding.rgFragFilterTypeRadiobuttonAvialableValues.removeAllViews();
 
-            // Por cada valor posible del filtro crea un nuevo RadioButton
-            for (FilterValue fValue : filter.getValues()) {
-                RadioButton rb = createRadioButton(fValue);
-                binding.rgFragFilterTypeRadiobuttonAvialableValues.addView(rb);
+                // Por cada valor posible del filtro crea un nuevo RadioButton
+                for (FilterValue fValue : filter.getValues()) {
+                    RadioButton rb = createRadioButton(fValue);
+                    binding.rgFragFilterTypeRadiobuttonAvialableValues.addView(rb);
+                }
+
+                binding.btnFragFilterTypeRadiobuttonsClean.setOnClickListener(view -> {
+                    binding.txtFragFilterTypeRadiobuttonSelectedValue.setText("");
+                    binding.rgFragFilterTypeRadiobuttonAvialableValues.clearCheck();
+                });
+
+                // Agrega un evento onClick a la vista para expandir o ocular los filtros disponibles
+                binding.cvFragFilterTypeRadioButtons.setOnClickListener(view -> {
+                    if (expanded)
+                        hideValues();
+                    else
+                        showValues();
+                });
             }
-
-            binding.btnFragFilterTypeRadiobuttonsClean.setOnClickListener(view -> {
-                binding.txtFragFilterTypeRadiobuttonSelectedValue.setText("");
-                binding.rgFragFilterTypeRadiobuttonAvialableValues.clearCheck();
-            });
-
-            // Agrega un evento onClick a la vista para expandir o ocular los filtros disponibles
-            binding.cvFragFilterTypeRadioButtons.setOnClickListener(view -> {
-                if (expanded)
-                    hideValues();
-                else
-                    showValues();
-            });
+            catch (Exception ex) {
+                AppUtils.logError(ex);
+            }
         }
 
         // region Private Methods
@@ -268,33 +273,37 @@ public class SearchFiltersAdapter extends RecyclerView.Adapter<SearchFiltersAdap
 
         @Override
         public void bind(Filter filter) {
-            currentFilter = filter;
-            binding.lblFragTypeCheckboxTitle.setText(filter.getName());
+            try {
+                currentFilter = filter;
+                binding.lblFragTypeCheckboxTitle.setText(filter.getName());
 
-            // Elimina los controles previos de la interfaz
-            selectedValues = new ArrayList<>();
-            binding.txtFragTypeCheckboxSelectedValues.setText("");
-            binding.linearLayoutFragTypeCheckboxAvailableValues.removeAllViews();
+                // Elimina los controles previos de la interfaz
+                selectedValues = new ArrayList<>();
+                binding.txtFragTypeCheckboxSelectedValues.setText("");
+                binding.linearLayoutFragTypeCheckboxAvailableValues.removeAllViews();
 
-            // Crea un checkbox por cada uno de los valores posibles del filtro
-            for(FilterValue fValue : filter.getValues())
-            {
-                CheckBox cb = createCheckbox(fValue);
-                binding.linearLayoutFragTypeCheckboxAvailableValues.addView(cb);
+                // Crea un checkbox por cada uno de los valores posibles del filtro
+                for (FilterValue fValue : filter.getValues()) {
+                    CheckBox cb = createCheckbox(fValue);
+                    binding.linearLayoutFragTypeCheckboxAvailableValues.addView(cb);
+                }
+
+                // Actualiza el texto mostrado en pantalla con los filtros seleccionados
+                updateDisplayText();
+
+                // Agrega un evento onClick a la vista para expandir o ocular los filtros disponibles
+                binding.cvFragFilterTypeCheckbox.setOnClickListener(view -> {
+                    if (expanded)
+                        hideValues();
+                    else
+                        showValues();
+                });
+
+                hideValues();
             }
-
-            // Actualiza el texto mostrado en pantalla con los filtros seleccionados
-            updateDisplayText();
-
-            // Agrega un evento onClick a la vista para expandir o ocular los filtros disponibles
-            binding.cvFragFilterTypeCheckbox.setOnClickListener(view -> {
-                if (expanded)
-                    hideValues();
-                else
-                    showValues();
-            });
-
-            hideValues();
+            catch (Exception ex) {
+                AppUtils.logError(ex);
+            }
         }
 
         // region Private Methods
@@ -379,25 +388,29 @@ public class SearchFiltersAdapter extends RecyclerView.Adapter<SearchFiltersAdap
 
         @Override
         public void bind(Filter filter) {
-            currentFilter = filter;
-            currentValue = filter.getValues().get(0);
+            try {
+                currentFilter = filter;
+                currentValue = filter.getValues().get(0);
 
-            if(currentValue.isSelected())
-                binding.swFragFilterTypeSwitchValue.setChecked(true);
+                if (currentValue.isSelected())
+                    binding.swFragFilterTypeSwitchValue.setChecked(true);
 
-            binding.swFragFilterTypeSwitchValue.setText(currentValue.getName());
-            binding.swFragFilterTypeSwitchValue.setChecked(currentValue.isSelected());
+                binding.swFragFilterTypeSwitchValue.setText(currentValue.getName());
+                binding.swFragFilterTypeSwitchValue.setChecked(currentValue.isSelected());
 
-            binding.swFragFilterTypeSwitchValue.setOnCheckedChangeListener((button, checked) -> {
-                if(checked) {
-                    currentValue.setSelected(true);
-                    observer.filterSelected(filter, currentValue);
-                }
-                else {
-                    currentValue.setSelected(false);
-                    observer.removeSelected(filter, currentValue);
-                }
-            });
+                binding.swFragFilterTypeSwitchValue.setOnCheckedChangeListener((button, checked) -> {
+                    if (checked) {
+                        currentValue.setSelected(true);
+                        observer.filterSelected(filter, currentValue);
+                    } else {
+                        currentValue.setSelected(false);
+                        observer.removeSelected(filter, currentValue);
+                    }
+                });
+            }
+            catch (Exception ex) {
+                AppUtils.logError(ex);
+            }
         }
     }
 
