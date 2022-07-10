@@ -48,6 +48,10 @@ Para poder probar el funcionamiento de la aplicación se desarrollaron algunas p
 
 Por falta de tiempo no se agregaron pruebas para los distintos ViewModels y pruebas automatizadas para la interfaz, otra limitante de estas pruebas es que como no se contaba con una API de prueba no se pudo probar el comportamiento de la aplicación ante distintos códigos de error que no fueran los más comunes retornados por la aplicación.
 
+# Manejo de errores
+
+En el caso de que la aplicación encuentre un error inesperado estos seran logueados en la consola del dispositivo y se le mostrara una pantalla de error al usuario, en general nunca se debería mostrar el error al usuario y nunca se debería caer la aplicación por un error inesperado.
+
 # Librerías de terceros
 
 ## Retrofit

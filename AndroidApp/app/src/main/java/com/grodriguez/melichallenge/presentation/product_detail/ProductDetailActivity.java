@@ -70,9 +70,14 @@ public class ProductDetailActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        if (isFinishing()) {
-            AppUtils.removeCustomPreference(getApplicationContext(), AppConstants.CURRENT_ITEM_ID_SHARED_PREFERENCE_KEY);
-            productViewModel.dispose();
+        try {
+            if (isFinishing()) {
+                AppUtils.removeCustomPreference(getApplicationContext(), AppConstants.CURRENT_ITEM_ID_SHARED_PREFERENCE_KEY);
+                productViewModel.dispose();
+            }
+        }
+        catch (Exception ex) {
+            AppUtils.logError(ex);
         }
     }
 
@@ -326,8 +331,13 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void showItemPicture(ItemPicture picture) {
-        if(!picture.getUrl().isEmpty()) {
-            Picasso.get().load(picture.getUrl()).into(binding.imgActivityProductDetailProductImage);
+        try {
+            if (!picture.getUrl().isEmpty()) {
+                Picasso.get().load(picture.getUrl()).into(binding.imgActivityProductDetailProductImage);
+            }
+        }
+        catch (Exception ex) {
+            showErrorScreen(ex);
         }
     }
 

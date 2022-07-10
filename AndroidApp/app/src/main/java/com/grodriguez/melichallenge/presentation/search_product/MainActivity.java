@@ -82,8 +82,13 @@ public class MainActivity extends AppCompatActivity implements SearchResultsAdap
     protected void onPause() {
         super.onPause();
 
-        if (isFinishing())
-            mainViewModel.dispose();
+        try {
+            if (isFinishing())
+                mainViewModel.dispose();
+        }
+        catch (Exception ex){
+            AppUtils.logError(ex);
+        }
     }
 
     @Override
@@ -232,43 +237,48 @@ public class MainActivity extends AppCompatActivity implements SearchResultsAdap
 
     // Muestra los resultados de la consulta en pantalla
     private void showSearchResults(SearchResult result) {
-        if (result.getResults().size() > 0) {
-            binding.trActivityMainSearchResultsBar.setVisibility(View.VISIBLE);
-            binding.rvActivityMainSearchResultsList.setVisibility(View.VISIBLE);
-            binding.lblActivityMainNoSearchResults.setVisibility(View.GONE);
+        try {
+            if (result.getResults().size() > 0) {
+                binding.trActivityMainSearchResultsBar.setVisibility(View.VISIBLE);
+                binding.rvActivityMainSearchResultsList.setVisibility(View.VISIBLE);
+                binding.lblActivityMainNoSearchResults.setVisibility(View.GONE);
 
-            // Busca la cantidad de resultados encontrados
-            int totalResults = result.getPagingData().getTotal();
-            String formattedQty;
-            String searchResultsQtyLabel;
+                // Busca la cantidad de resultados encontrados
+                int totalResults = result.getPagingData().getTotal();
+                String formattedQty;
+                String searchResultsQtyLabel;
 
-            // Modifica el mensaje a mostrar en base a si se encontraron más resultados que el
-            // tope permitido para mostrar (2000)
-            if (totalResults < AppConstants.MAX_SEARCH_RESULTS_DISPLAY_QTY) {
-                formattedQty = NumberFormat.getInstance().format(result.getPagingData().getTotal());
-                searchResultsQtyLabel = String.format("%s resultados", formattedQty);
+                // Modifica el mensaje a mostrar en base a si se encontraron más resultados que el
+                // tope permitido para mostrar (2000)
+                if (totalResults < AppConstants.MAX_SEARCH_RESULTS_DISPLAY_QTY) {
+                    formattedQty = NumberFormat.getInstance().format(result.getPagingData().getTotal());
+                    searchResultsQtyLabel = String.format("%s resultados", formattedQty);
+                } else {
+                    formattedQty = NumberFormat.getInstance().format(AppConstants.MAX_SEARCH_RESULTS_DISPLAY_QTY);
+                    searchResultsQtyLabel = String.format("+%s resultados", formattedQty);
+                }
+
+                // Muestra la cantidad de registros encontrados
+                binding.lblActivityMainSearchResultQty.setText(searchResultsQtyLabel);
+
+                // Muestra la cantidad de filtros seleccionados
+                String appliedFiltersLabel = String.format("Filtrar (%s)", result.getFilters().size());
+                binding.btnActivityMainSearchFilters.setText(appliedFiltersLabel);
+
+                // Actualiza el recyclerview con los artículos a mostrar
+                searchResultsAdapter.updateItems(result.getResults());
+
+                // Una vez cargado el artículo muestra el artículo en la primera posición de la lista
+                layoutManager.scrollToPosition(0);
             } else {
-                formattedQty = NumberFormat.getInstance().format(AppConstants.MAX_SEARCH_RESULTS_DISPLAY_QTY);
-                searchResultsQtyLabel = String.format("+%s resultados", formattedQty);
+                binding.rvActivityMainSearchResultsList.setVisibility(View.GONE);
+                binding.lblActivityMainNoSearchResults.setVisibility(View.VISIBLE);
             }
-
-            // Muestra la cantidad de registros encontrados
-            binding.lblActivityMainSearchResultQty.setText(searchResultsQtyLabel);
-
-            // Muestra la cantidad de filtros seleccionados
-            String appliedFiltersLabel = String.format("Filtrar (%s)", result.getFilters().size());
-            binding.btnActivityMainSearchFilters.setText(appliedFiltersLabel);
-
-            // Actualiza el recyclerview con los artículos a mostrar
-            searchResultsAdapter.updateItems(result.getResults());
-
-            // Una vez cargado el artículo muestra el artículo en la primera posición de la lista
-            layoutManager.scrollToPosition(0);
-        } else {
-            binding.rvActivityMainSearchResultsList.setVisibility(View.GONE);
-            binding.lblActivityMainNoSearchResults.setVisibility(View.VISIBLE);
         }
-
+        catch (Exception ex)
+        {
+            showErrorScreen(ex);
+        }
     }
 
     // Muestra una pantalla de error y logea el error en la consola

@@ -32,8 +32,10 @@ public class AppUtils {
 
     // Genera un log en consola con el mensaje del error generado
     public static void logError(Throwable e) {
-        Log.e(AppConstants.APP_LOG_TAG, "Error message: " + e.getMessage());
-        Log.e(AppConstants.APP_LOG_TAG, "Stacktrace: " + Arrays.toString(e.getStackTrace()));
+        if (e != null) {
+            Log.e(AppConstants.APP_LOG_TAG, "Error message: " + e.getMessage());
+            Log.e(AppConstants.APP_LOG_TAG, "Stacktrace: " + Arrays.toString(e.getStackTrace()));
+        }
     }
 
 }// End Class

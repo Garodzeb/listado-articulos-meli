@@ -57,7 +57,13 @@ public class SearchFilterFragment extends Fragment implements ISearchFiltersList
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initializeUI();
+        try {
+            initializeUI();
+        }
+        catch (Exception ex)
+        {
+            AppUtils.logError(ex);
+        }
     }
 
     // region Initialization Methods

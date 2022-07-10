@@ -64,8 +64,10 @@ public class InitialActivity extends AppCompatActivity {
     private void initializeObservers() {
         initialViewModel.getUIState().observe(this, state -> {
             // Si dio un error en la inicialización finaliza el Activity y no deja continuar
-            if (state.getCurrentStatus() == UIStatus.UI_ON_ERROR)
+            if (state.getCurrentStatus() == UIStatus.UI_ON_ERROR) {
+                AppUtils.logError(state.getError());
                 finish();
+            }
         });
 
         initialViewModel.getSavedMetadata().observe(this, savedMetadata -> {
